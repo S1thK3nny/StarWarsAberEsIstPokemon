@@ -102,6 +102,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                         break;
                         
                     case 2:
+                        System.out.println("\nSpieler 1, wähle dein Item aus:");
                         for(int i = 0; i<player1.getItems().length; i++) { //Je nach Anzahl der Items, meist 4
                             System.out.println((i+1) + ") " + player1.getItems()[i]); //Printet z.b. 1) Placeholder
                         }
@@ -123,11 +124,11 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                     case 1:
                     default:
                         System.out.println("\nSpieler 2, wähle deine Attacke:");
-                        for(int i = 0; i<player2.getAttacks().length; i++) { //Je nach Anzahl der Attacken, meist 4
-                            System.out.println((i+1) + ") " + player2.getAttacks()[i]); //Printet z.b. 1) Melee
+                        for(int i = 0; i<player2.getAttacks().length; i++) {
+                            System.out.println((i+1) + ") " + player2.getAttacks()[i]);
                         }
-                        player2.setCurrentAttack(p2attack = attackinput.nextInt()); //Geht wieder rüber zu class "Character", setzt input Variable "p2attack" ein.
-                        player2.Attacks(); //setzt die damage values
+                        player2.setCurrentAttack(p2attack = attackinput.nextInt());
+                        player2.Attacks();
                     
                     
                         if(player1.getAttacks()[p1attack-1].contains("schild") || player1.getAttacks()[p1attack-1].equals("Abwehr")) {
@@ -135,18 +136,19 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                         }
                     
                     
-                        player1.setLife(player1.getLife()-player2.getFinalAttackDamage()); //Fügt den Schaden hinzu
+                        player1.setLife(player1.getLife()-player2.getFinalAttackDamage());
                         AttackOutput(player2, player1);
                     
-                        if(player1.getLife()<0) { //Wenn Spieler 1 0 HP hat
+                        if(player1.getLife()<0) {
                             System.out.println("\nGlückwunsch, Spieler 2, du hast gewonnen!");
                             break fight;
                         }
                         break;
                         
                     case 2:
-                        for(int i = 0; i<player2.getItems().length; i++) { //Je nach Anzahl der Items, meist 4
-                            System.out.println((i+1) + ") " + player2.getItems()[i]); //Printet z.b. 1) Placeholder
+                        System.out.println("\nSpieler 2, wähle dein Item aus:");
+                        for(int i = 0; i<player2.getItems().length; i++) {
+                            System.out.println((i+1) + ") " + player2.getItems()[i]);
                         }
                         player2.setCurrentItem(p2iteminput = attackinput.nextInt());
                         player2.ItemUse();
@@ -167,11 +169,11 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                     case 1:
                     default:
                         System.out.println("\nSpieler 2, wähle deine Attacke:");
-                        for(int i = 0; i<player2.getAttacks().length; i++) { //Je nach Anzahl der Attacken, meist 4
-                            System.out.println((i+1) + ") " + player2.getAttacks()[i]); //Printet z.b. 1) Melee
+                        for(int i = 0; i<player2.getAttacks().length; i++) {
+                            System.out.println((i+1) + ") " + player2.getAttacks()[i]);
                         }
-                        player2.setCurrentAttack(p2attack = attackinput.nextInt()); //Geht wieder rüber zu class "Character", setzt input Variable "p2attack" ein.
-                        player2.Attacks(); //setzt die damage values
+                        player2.setCurrentAttack(p2attack = attackinput.nextInt());
+                        player2.Attacks();
                     
                     
                         if(player1.getAttacks()[p1attack-1].contains("schild") || player1.getAttacks()[p1attack-1].equals("Abwehr")) {
@@ -179,18 +181,19 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                         }
                     
                     
-                        player1.setLife(player1.getLife()-player2.getFinalAttackDamage()); //Fügt den Schaden hinzu
+                        player1.setLife(player1.getLife()-player2.getFinalAttackDamage());
                         AttackOutput(player2, player1);
                     
-                        if(player1.getLife()<0) { //Wenn Spieler 1 0 HP hat
+                        if(player1.getLife()<0) {
                             System.out.println("\nGlückwunsch, Spieler 2, du hast gewonnen!");
                             break fight;
                         }
                         break;
                         
                     case 2:
-                        for(int i = 0; i<player2.getItems().length; i++) { //Je nach Anzahl der Items, meist 4
-                            System.out.println((i+1) + ") " + player2.getItems()[i]); //Printet z.b. 1) Placeholder
+                        System.out.println("\nSpieler 2, wähle dein Item aus:");
+                        for(int i = 0; i<player2.getItems().length; i++) {
+                            System.out.println((i+1) + ") " + player2.getItems()[i]);
                         }
                         player2.setCurrentItem(p2iteminput = attackinput.nextInt());
                         player2.ItemUse();
@@ -209,30 +212,31 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                     case 1:
                     default:
                         System.out.println("\nSpieler 1, wähle deine Attacke:");
-                        for(int i = 0; i<player1.getAttacks().length; i++) { //Je nach Anzahl der Attacken, meist 4
-                            System.out.println((i+1) + ") " + player1.getAttacks()[i]); //Printet z.b. 1) Melee
+                        for(int i = 0; i<player1.getAttacks().length; i++) {
+                            System.out.println((i+1) + ") " + player1.getAttacks()[i]);
                         }
-                        player1.setCurrentAttack(p1attack = attackinput.nextInt()); //Geht wieder rüber zu class "Character", setzt input Variable "p1attack" ein.
-                        player1.Attacks(); //setzt die damage values
+                        player1.setCurrentAttack(p1attack = attackinput.nextInt());
+                        player1.Attacks();
                     
                     
-                        if(player2.getAttacks()[p2attack-1].contains("schild") || player2.getAttacks()[p2attack-1].equals("Abwehr")) { //MUSS VOR SETLIFE SEIN!!! Sonst klappt es nicht. WAG ES JA NICHT WIEDER DEN CODE HIER ZU ZWEIFELN; SONST KRIEGT DER SPIELER SCHADEN
+                        if(player2.getAttacks()[p2attack-1].contains("schild") || player2.getAttacks()[p2attack-1].equals("Abwehr")) {
                             player1.setFinalAttackDamage(0);   
                         }
                     
                     
-                        player2.setLife(player2.getLife()-player1.getFinalAttackDamage()); //Fügt den Schaden hinzu
-                        AttackOutput(player1, player2); //Printet ob man sich heilt oder ob man Schaden gemacht hat und wie viel
+                        player2.setLife(player2.getLife()-player1.getFinalAttackDamage());
+                        AttackOutput(player1, player2);
                     
-                        if(player2.getLife()<0) { //Wenn Spieler 2 0 HP hat
+                        if(player2.getLife()<0) {
                             System.out.println("\nGlückwunsch, Spieler 1, du hast gewonnen!");
                             break fight;
                         }
                         break;
                         
                     case 2:
-                        for(int i = 0; i<player1.getItems().length; i++) { //Je nach Anzahl der Items, meist 4
-                            System.out.println((i+1) + ") " + player1.getItems()[i]); //Printet z.b. 1) Placeholder
+                        System.out.println("\nSpieler 1, wähle dein Item aus:");
+                        for(int i = 0; i<player1.getItems().length; i++) {
+                            System.out.println((i+1) + ") " + player1.getItems()[i]);
                         }
                         player1.setCurrentItem(p1iteminput = attackinput.nextInt());
                         player1.ItemUse();
