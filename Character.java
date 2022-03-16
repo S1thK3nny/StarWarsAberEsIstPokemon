@@ -19,7 +19,14 @@ public class Character {
     private String[] attacks = {attack1, attack2, attack3, attack4};
     private String type = "Damage";
     
+    private String item1 = "Placeholder";
+    private String item2 = "Placeholder";
+    private String item3 = "Placeholder";
+    private String item4 = "Placeholder";
+    private String[] items = {item1, item2, item3, item4};
+    
     private int attack = 0;
+    private int item = 0;
     private int BurnCounter = 0;
     //Default values STOP
     
@@ -39,6 +46,10 @@ public class Character {
     
     public String[] getAttacks() {
         return attacks;
+    }
+    
+    public String[] getItems() {
+        return items;
     }
     
     public double getTempAttackDamage() {
@@ -83,17 +94,17 @@ public class Character {
         this.forcesensitive = forcesensitive;
         this.tier = tier;
         if(tier.equals("TIER1")) {
-            this.life = 500 + (int)(Math.random() * ((1100 - 500) + 1)); //Danke für die Random Idee, Jan! :D
-            this.damage = 100 + (int)(Math.random() * ((250 - 100) + 1));
+            this.life = 850 + (int)(Math.random() * ((1100 - 850) + 1)); //Danke für die Random Idee, Jan! :D
+            this.damage = 200 + (int)(Math.random() * ((350 - 200) + 1));
             this.attackspeed = 1.0 + (Math.random() * (1.35-1.0));
         }
         else if(tier.equals("TIER2")) {
-            this.life = 900 + (int)(Math.random() * ((2100 - 900) + 1));
-            this.damage = 250 + (int)(Math.random() * ((500 - 250) + 1));
+            this.life = 1000 + (int)(Math.random() * ((2100 - 1000) + 1));
+            this.damage = 350 + (int)(Math.random() * ((500 - 350) + 1));
             this.attackspeed = 1.15 + (Math.random() * (1.6-1.15));
         }
         else if(tier.equals("TIER3")) {
-            this.life = 1900 + (int)(Math.random() * ((3000 - 1900) + 1));
+            this.life = 1900 + (int)(Math.random() * ((2800 - 1900) + 1));
             this.damage = 500 + (int)(Math.random() * ((750 - 500) + 1));
             this.attackspeed = 1.45 + (Math.random() * (2-1.45));
         }
@@ -117,9 +128,20 @@ public class Character {
         this.attacks[2] = attack3;
         this.attacks[3] = attack4;
     }
+    
+    public void setItems(String item1, String item2, String item3, String item4) {
+        this.items[0] = item1;
+        this.items[1] = item2;
+        this.items[2] = item3;
+        this.items[3] = item4;
+    }
 
     public void setCurrentAttack(int attack) {
         this.attack = attack;
+    }
+    
+    public void setCurrentItem(int item) {
+        this.item = item;
     }
     
     public void setFinalAttackDamage(int finalattackdamage) {
@@ -183,5 +205,11 @@ public class Character {
                 }
                 break;
             }
+    }
+    
+    public void ItemUse() {
+        System.out.println(getName() + " benutzt das Item " + getItems()[item-1]); //Literally der gleiche Scheiß wie in Attacks()
+        setLife(getLife()+500);
+        System.out.println("PLACEHOLDER: " + getName() + " hat 500 Leben geheilt! " + getName() + " hat jetzt " + getLife() + " Leben, davor " + (getLife()-500));
     }
 }
