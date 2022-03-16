@@ -1,4 +1,5 @@
 import java.lang.Math;
+import java.util.Scanner;
 
 public class Character {
     //Default values START
@@ -25,6 +26,18 @@ public class Character {
     private String item4 = "Placeholder";
     private String[] items = {item1, item2, item3, item4};
     
+    private int item1maxuse = 2;
+    private int item2maxuse = 2;
+    private int item3maxuse = 2;
+    private int item4maxuse = 2;
+    private int[] itemmaxuses = {item1maxuse, item2maxuse, item3maxuse, item4maxuse};
+    
+    private int item1tempuse = item1maxuse;
+    private int item2tempuse = item2maxuse;
+    private int item3tempuse = item3maxuse;
+    private int item4tempuse = item4maxuse;
+    private int[] itemtempuses = {item1tempuse, item2tempuse, item3tempuse, item4tempuse};
+    
     private int attack = 0;
     private int item = 0;
     private int BurnCounter = 0;
@@ -50,6 +63,14 @@ public class Character {
     
     public String[] getItems() {
         return items;
+    }
+    
+    public int[] getItemMaxUses() {
+        return itemmaxuses;
+    }
+    
+    public int[] getItemTempUses() {
+        return itemtempuses;
     }
     
     public double getTempAttackDamage() {
@@ -129,11 +150,21 @@ public class Character {
         this.attacks[3] = attack4;
     }
     
-    public void setItems(String item1, String item2, String item3, String item4) {
+    public void setItems(String item1, int item1maxuse, String item2, int item2maxuse, String item3, int item3maxuse, String item4, int item4maxuse) {
         this.items[0] = item1;
         this.items[1] = item2;
         this.items[2] = item3;
         this.items[3] = item4;
+    
+        this.itemmaxuses[0] = item1maxuse;
+        this.itemmaxuses[1] = item2maxuse;
+        this.itemmaxuses[2] = item3maxuse;
+        this.itemmaxuses[3] = item4maxuse;
+        
+        this.itemtempuses[0] = item1maxuse;
+        this.itemtempuses[1] = item2maxuse;
+        this.itemtempuses[2] = item3maxuse;
+        this.itemtempuses[3] = item4maxuse;
     }
 
     public void setCurrentAttack(int attack) {
@@ -150,6 +181,10 @@ public class Character {
     
     public void setBurnCounter(int BurnCounter) {
         this.BurnCounter = BurnCounter;
+    }
+    
+    public void setItemTempUses(int itemtempuses) {
+        this.itemtempuses[item-1] = itemtempuses;
     }
     //Setters STOP
     
@@ -207,9 +242,25 @@ public class Character {
             }
     }
     
+    Scanner iteminput = new Scanner(System.in);
     public void ItemUse() {
-        System.out.println(getName() + " benutzt das Item " + getItems()[item-1]); //Literally der gleiche Scheiß wie in Attacks()
-        setLife(getLife()+500);
-        System.out.println("PLACEHOLDER: " + getName() + " hat 500 Leben geheilt! " + getName() + " hat jetzt " + getLife() + " Leben, davor " + (getLife()-500));
+        while(true) {
+            for(int i = 0; i<getItems().length; i++) { //Je nach Anzahl der Items, meist 4
+                    System.out.println((i+1) + ") " + "(" + getItemTempUses()[i] + "/" + getItemMaxUses()[i] + ") " + getItems()[i]); //Printet z.b. 1) Placeholder
+                    }
+            int iteminput;
+            setCurrentItem(iteminput = this.iteminput.nextInt());
+            if(getItemTempUses()[item-1]>0) {
+                setItemTempUses(getItemTempUses()[item-1]-1);
+                System.out.println("\n" + getName() + " benutzt das Item " + getItems()[item-1] + "! " + "Noch " + getItemTempUses()[item-1] + " mal kann die Attacke verwendet werden."); //Literally der gleiche Scheiß wie in Attacks()
+                setLife(getLife()+500);
+                System.out.println("\nPLACEHOLDER: " + getName() + " hat 500 Leben geheilt! " + getName() + " hat jetzt " + getLife() + " Leben, davor " + (getLife()-500));
+                break;
+            }
+            else {
+                System.out.println("\nDas Item kann nicht mehr verwendet werden! Wähle nochmal!");
+                continue;
+            }
+        }
     }
 }
