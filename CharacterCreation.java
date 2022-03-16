@@ -75,6 +75,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
             Scanner attackinput = new Scanner(System.in);
             if(player1.getAttackSpeed()>player2.getAttackSpeed()) { //Spieler 1 fängt an
                 checkBurn(player2, player1, p2attack, p1attack);
+                p1: while(true) {
                 System.out.println("\nSpieler 1, wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
                 menuinputp1 = attackinput.nextInt();
                 switch(menuinputp1) {
@@ -100,7 +101,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                             System.out.println("\nGlückwunsch, Spieler 1, du hast gewonnen!");
                             break fight;
                         }
-                        break;
+                        break p1;
                         
                     case 2:
                         if(player1.getItemTempUses()[0]==0 && player1.getItemTempUses()[1]==0 && player1.getItemTempUses()[2]==0 && player1.getItemTempUses()[3]==0) {
@@ -110,14 +111,14 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                         else {
                             System.out.println("\nSpieler 1, wähle dein Item aus:");
                             player1.ItemUse();
-                            break;
+                            break p1;
                         }
                         
                     case 3:
                         System.out.println("\n" + player1.getName() + " ist geflohen! \nSpieler 2 gewinnt!");
                         break fight;
                     }
-
+                }
                 
                 
                 checkBurn(player1, player2, p1attack, p2attack);
@@ -170,6 +171,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                 
             else {
                 checkBurn(player1, player2, p1attack, p2attack);
+                p2: while(true) {
                 System.out.println("\nSpieler 2, wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
                 menuinputp2 = attackinput.nextInt();
                 switch(menuinputp2) {
@@ -195,7 +197,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                             System.out.println("\nGlückwunsch, Spieler 2, du hast gewonnen!");
                             break fight;
                         }
-                        break;
+                        break p2;
                         
                     case 2:
                         if(player2.getItemTempUses()[0]==0 && player2.getItemTempUses()[1]==0 && player2.getItemTempUses()[2]==0 && player2.getItemTempUses()[3]==0) {
@@ -205,14 +207,14 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                         else {
                             System.out.println("\nSpieler 2, wähle dein Item aus:");
                             player2.ItemUse();
-                            break;
+                            break p2;
                         }
                         
                     case 3:
                         System.out.println("\n" + player2.getName() + " ist geflohen! \nSpieler 1 gewinnt!");
                         break fight;
                     }
-                    
+                } 
                     
                 checkBurn(player2, player1, p2attack, p1attack);
                 p1: while(true) {
