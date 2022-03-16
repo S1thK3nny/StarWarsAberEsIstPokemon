@@ -121,6 +121,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                 menuinputp2 = attackinput.nextInt();
                 switch(menuinputp2) {
                     case 1:
+                    default:
                         System.out.println("\nSpieler 2, wähle deine Attacke:");
                         for(int i = 0; i<player2.getAttacks().length; i++) { //Je nach Anzahl der Attacken, meist 4
                             System.out.println((i+1) + ") " + player2.getAttacks()[i]); //Printet z.b. 1) Melee
@@ -164,6 +165,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                 menuinputp2 = attackinput.nextInt();
                 switch(menuinputp2) {
                     case 1:
+                    default:
                         System.out.println("\nSpieler 2, wähle deine Attacke:");
                         for(int i = 0; i<player2.getAttacks().length; i++) { //Je nach Anzahl der Attacken, meist 4
                             System.out.println((i+1) + ") " + player2.getAttacks()[i]); //Printet z.b. 1) Melee
@@ -205,6 +207,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                 menuinputp1 = attackinput.nextInt();
                 switch(menuinputp1) {
                     case 1:
+                    default:
                         System.out.println("\nSpieler 1, wähle deine Attacke:");
                         for(int i = 0; i<player1.getAttacks().length; i++) { //Je nach Anzahl der Attacken, meist 4
                             System.out.println((i+1) + ") " + player1.getAttacks()[i]); //Printet z.b. 1) Melee
