@@ -6,6 +6,9 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
         Character player1 = new Character();
         Character player2 = new Character();
         
+        Character input1 = new Character();
+        Character input2 = new Character();
+        
         Character LukeSkywalker = new Character();
         Character DarthVader = new Character();
         Character Palpatine = new Character();
@@ -69,200 +72,119 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
         int p2iteminput;
         int menuinputp1;
         int menuinputp2;
+        String spieler1;
+        String spieler2;
+        
+        if(player1.getAttackSpeed()>player2.getAttackSpeed())  {
+            input1 = player1;
+            input2 = player2;
+            spieler1 = "Spieler 1";
+            spieler2= "Spieler 2";
+        }
+        else {
+            input1 = player2;
+            input2 = player1;
+            spieler1 = "Spieler 2";
+            spieler2 = "Spieler 1";
+        }
         
         //Kampf an sich START
         fight: while(true) { //benutzt break fight; um die ganze Schleife jetzt zu beenden
             Scanner attackinput = new Scanner(System.in);
-            if(player1.getAttackSpeed()>player2.getAttackSpeed()) { //Spieler 1 fängt an
-                checkBurn(player2, player1, p2attack, p1attack);
+                checkBurn(input2, input1, p2attack, p1attack);
                 p1: while(true) {
-                System.out.println("\nSpieler 1, wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
+                System.out.println("\n" + spieler1 + ", wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
                 menuinputp1 = attackinput.nextInt();
                 switch(menuinputp1) {
                     case 1:
                     default: //Wenn der Spieler die Zahl 1 oder irgendwas außer 2 und 3 eingibt, sonst passiert nichts!
-                        System.out.println("\nSpieler 1, wähle deine Attacke:");
-                        for(int i = 0; i<player1.getAttacks().length; i++) { //Je nach Anzahl der Attacken, meist 4
-                            System.out.println((i+1) + ") " + player1.getAttacks()[i]); //Printet z.b. 1) Melee
+                        System.out.println("\n" + spieler1 + ", wähle deine Attacke:");
+                        for(int i = 0; i<input1.getAttacks().length; i++) { //Je nach Anzahl der Attacken, meist 4
+                            System.out.println((i+1) + ") " + input1.getAttacks()[i]); //Printet z.b. 1) Melee
                         }
-                        player1.setCurrentAttack(p1attack = attackinput.nextInt()); //Geht wieder rüber zu class "Character", setzt input Variable "p1attack" ein.
-                        player1.Attacks(); //setzt die damage values
+                        input1.setCurrentAttack(p1attack = attackinput.nextInt()); //Geht wieder rüber zu class "Character", setzt input Variable "p1attack" ein.
+                        input1.Attacks(); //setzt die damage values
                     
                     
-                        if(player2.getAttacks()[p2attack-1].contains("schild") || player2.getAttacks()[p2attack-1].equals("Abwehr")) { //MUSS VOR SETLIFE SEIN!!! Sonst klappt es nicht. WAG ES JA NICHT WIEDER DEN CODE HIER ZU ZWEIFELN; SONST KRIEGT DER SPIELER SCHADEN
-                            player1.setFinalAttackDamage(0);   
+                        if(input2.getAttacks()[p2attack-1].contains("schild") || input2.getAttacks()[p2attack-1].equals("Abwehr")) { //MUSS VOR SETLIFE SEIN!!! Sonst klappt es nicht. WAG ES JA NICHT WIEDER DEN CODE HIER ZU ZWEIFELN; SONST KRIEGT DER SPIELER SCHADEN
+                            input1.setFinalAttackDamage(0);   
                         }
                     
                     
-                        player2.setLife(player2.getLife()-player1.getFinalAttackDamage()); //Fügt den Schaden hinzu
-                        AttackOutput(player1, player2); //Printet ob man sich heilt oder ob man Schaden gemacht hat und wie viel
+                        input2.setLife(input2.getLife()-input1.getFinalAttackDamage()); //Fügt den Schaden hinzu
+                        AttackOutput(input1, input2); //Printet ob man sich heilt oder ob man Schaden gemacht hat und wie viel
                     
-                        if(player2.getLife()<0) { //Wenn Spieler 2 0 HP hat
-                            System.out.println("\nGlückwunsch, Spieler 1, du hast gewonnen!");
+                        if(input2.getLife()<0) { //Wenn Spieler 2 0 HP hat
+                            System.out.println("\nGlückwunsch, " + spieler1 + ", du hast gewonnen!");
                             break fight;
                         }
                         break p1;
                         
                     case 2:
-                        if(player1.getItemTempUses()[0]==0 && player1.getItemTempUses()[1]==0 && player1.getItemTempUses()[2]==0 && player1.getItemTempUses()[3]==0) {
+                        if(input1.getItemTempUses()[0]==0 && input1.getItemTempUses()[1]==0 && input1.getItemTempUses()[2]==0 && input1.getItemTempUses()[3]==0) {
                             System.out.println("\nAlle Items verbraucht!");
                             continue;
                         }
                         else {
-                            System.out.println("\nSpieler 1, wähle dein Item aus:");
-                            player1.ItemUse();
+                            System.out.println("\n" + spieler1 + ", wähle dein Item aus:");
+                            input1.ItemUse();
                             break p1;
                         }
                         
                     case 3:
-                        System.out.println("\n" + player1.getName() + " ist geflohen! \nSpieler 2 gewinnt!");
+                        System.out.println("\n" + input1.getName() + " ist geflohen! \n" + spieler2 + " gewinnt!");
                         break fight;
                     }
                 }
                 
                 
-                checkBurn(player1, player2, p1attack, p2attack);
+                checkBurn(input1, input2, p1attack, p2attack);
                 p2: while(true) { //Zweite Spieler brauchen while schleifen um auf diese zurück zu callen wenn alle Items verbraucht wurden
-                    System.out.println("\nSpieler 2, wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
+                    System.out.println("\n" + spieler2 + ", wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
                     menuinputp2 = attackinput.nextInt();
                     switch(menuinputp2) {
                         case 1:
                         default:
-                            System.out.println("\nSpieler 2, wähle deine Attacke:");
-                            for(int i = 0; i<player2.getAttacks().length; i++) {
-                                System.out.println((i+1) + ") " + player2.getAttacks()[i]);
+                            System.out.println("\n" + spieler2 + ", wähle deine Attacke:");
+                            for(int i = 0; i<input2.getAttacks().length; i++) {
+                                System.out.println((i+1) + ") " + input2.getAttacks()[i]);
                             }
-                            player2.setCurrentAttack(p2attack = attackinput.nextInt());
-                            player2.Attacks();
+                            input2.setCurrentAttack(p2attack = attackinput.nextInt());
+                            input2.Attacks();
                     
                     
-                            if(player1.getAttacks()[p1attack-1].contains("schild") || player1.getAttacks()[p1attack-1].equals("Abwehr")) {
-                                player2.setFinalAttackDamage(0);   
+                            if(input1.getAttacks()[p1attack-1].contains("schild") || input1.getAttacks()[p1attack-1].equals("Abwehr")) {
+                                input2.setFinalAttackDamage(0);   
                             }
                     
                     
-                            player1.setLife(player1.getLife()-player2.getFinalAttackDamage());
-                            AttackOutput(player2, player1);
+                            input1.setLife(input1.getLife()-input2.getFinalAttackDamage());
+                            AttackOutput(input2, input1);
                     
-                            if(player1.getLife()<0) {
-                                System.out.println("\nGlückwunsch, Spieler 2, du hast gewonnen!");
+                            if(input1.getLife()<0) {
+                                System.out.println("\nGlückwunsch, " + spieler2 + ", du hast gewonnen!");
                                 break fight;
                             }
                             break p2;
                         
                         case 2:
-                            if(player2.getItemTempUses()[0]==0 && player2.getItemTempUses()[1]==0 && player2.getItemTempUses()[2]==0 && player2.getItemTempUses()[3]==0) {
+                            if(input2.getItemTempUses()[0]==0 && input2.getItemTempUses()[1]==0 && input2.getItemTempUses()[2]==0 && input2.getItemTempUses()[3]==0) {
                                 System.out.println("\nAlle Items verbraucht!");
                                 continue p2;
                             }
                             else {
-                                System.out.println("\nSpieler 2, wähle dein Item aus:");
-                                player2.ItemUse();
+                                System.out.println("\n" + spieler2 + ", wähle dein Item aus:");
+                                input2.ItemUse();
                                 break p2;
                             }
                         
                         case 3:
-                            System.out.println("\n" + player2.getName() + " ist geflohen! \nSpieler 1 gewinnt!");
+                            System.out.println("\n" + input2.getName() + " ist geflohen! \n" + spieler1 + " gewinnt!");
                             break fight;
                     }
                 }
             }
                 
-                
-            else {
-                checkBurn(player1, player2, p1attack, p2attack);
-                p2: while(true) {
-                System.out.println("\nSpieler 2, wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
-                menuinputp2 = attackinput.nextInt();
-                switch(menuinputp2) {
-                    case 1:
-                    default:
-                        System.out.println("\nSpieler 2, wähle deine Attacke:");
-                        for(int i = 0; i<player2.getAttacks().length; i++) {
-                            System.out.println((i+1) + ") " + player2.getAttacks()[i]);
-                        }
-                        player2.setCurrentAttack(p2attack = attackinput.nextInt());
-                        player2.Attacks();
-                    
-                    
-                        if(player1.getAttacks()[p1attack-1].contains("schild") || player1.getAttacks()[p1attack-1].equals("Abwehr")) {
-                            player2.setFinalAttackDamage(0);   
-                        }
-                    
-                    
-                        player1.setLife(player1.getLife()-player2.getFinalAttackDamage());
-                        AttackOutput(player2, player1);
-                    
-                        if(player1.getLife()<0) {
-                            System.out.println("\nGlückwunsch, Spieler 2, du hast gewonnen!");
-                            break fight;
-                        }
-                        break p2;
-                        
-                    case 2:
-                        if(player2.getItemTempUses()[0]==0 && player2.getItemTempUses()[1]==0 && player2.getItemTempUses()[2]==0 && player2.getItemTempUses()[3]==0) {
-                            System.out.println("\nAlle Items verbraucht!");
-                            continue;
-                        }
-                        else {
-                            System.out.println("\nSpieler 2, wähle dein Item aus:");
-                            player2.ItemUse();
-                            break p2;
-                        }
-                        
-                    case 3:
-                        System.out.println("\n" + player2.getName() + " ist geflohen! \nSpieler 1 gewinnt!");
-                        break fight;
-                    }
-                } 
-                    
-                checkBurn(player2, player1, p2attack, p1attack);
-                p1: while(true) {
-                    System.out.println("\nSpieler 1, wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
-                    menuinputp1 = attackinput.nextInt();
-                    switch(menuinputp1) {
-                        case 1:
-                        default:
-                            System.out.println("\nSpieler 1, wähle deine Attacke:");
-                            for(int i = 0; i<player1.getAttacks().length; i++) {
-                                System.out.println((i+1) + ") " + player1.getAttacks()[i]);
-                            }
-                            player1.setCurrentAttack(p1attack = attackinput.nextInt());
-                            player1.Attacks();
-                    
-                    
-                            if(player2.getAttacks()[p2attack-1].contains("schild") || player2.getAttacks()[p2attack-1].equals("Abwehr")) {
-                                player1.setFinalAttackDamage(0);   
-                            }
-                    
-                    
-                            player2.setLife(player2.getLife()-player1.getFinalAttackDamage());
-                            AttackOutput(player1, player2);
-                    
-                            if(player2.getLife()<0) {
-                                System.out.println("\nGlückwunsch, Spieler 1, du hast gewonnen!");
-                                break fight;
-                            }
-                            break p1;
-                        
-                        case 2:
-                            if(player1.getItemTempUses()[0]==0 && player1.getItemTempUses()[1]==0 && player1.getItemTempUses()[2]==0 && player1.getItemTempUses()[3]==0) {
-                                System.out.println("\nAlle Items verbraucht!");
-                                continue p1;
-                            }
-                            else {
-                                System.out.println("\nSpieler 1, wähle dein Item aus:");
-                                player1.ItemUse();
-                                break p1;
-                            }
-                        
-                        case 3:
-                            System.out.println("\n" + player1.getName() + " ist geflohen! \nSpieler 2 gewinnt!");
-                            break fight;
-                        }
-                    }
-                }
-        }
         //Kampf an sich STOP
     }
     
