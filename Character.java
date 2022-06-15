@@ -41,6 +41,7 @@ public class Character {
     private int attack = 0;
     private int item = 0;
     private int BurnCounter = 0;
+    private boolean isProtected = false;
     //Default values STOP
     
     
@@ -95,6 +96,10 @@ public class Character {
     
     public int getBurnCounter() {
         return BurnCounter;
+    }
+
+    public boolean getIsProtected() {
+        return isProtected;
     }
     
     public String getTier() {
@@ -179,6 +184,10 @@ public class Character {
         this.finalattackdamage = finalattackdamage;
     }
     
+    public void setIsProtected(boolean isProtected) {
+        this.isProtected = isProtected;
+    }
+    
     public void setBurnCounter(int BurnCounter) {
         this.BurnCounter = BurnCounter;
     }
@@ -191,6 +200,9 @@ public class Character {
 
 
     public void Attacks() {
+        if(attack>4 || attack<=0) {
+            return;
+        }
         hitchance = Math.random() * 100; //generiert random hitchance pro Angriff
         System.out.println(getName() + " benutzt " + getAttacks()[attack-1]);
         if(getAttacks()[attack-1].equals("Lichtschwert Angriff")) { //Again, muss -1 sein, da es ein Array ist. Wird pro Runde neu generiert, da Attacks() in der Schleife neu ausgeführt wird
@@ -206,6 +218,7 @@ public class Character {
         else if(getAttacks()[attack-1].contains("schild") || getAttacks()[attack-1].equals("Abwehr")) {
             type = "Shield";
             setFinalAttackDamage(0); //Wenn dies nicht der Fall ist, dann fügt der Spieler Schaden hinzu. Zu OP
+            isProtected = true;
         }
         else if(getAttacks()[attack-1].equals("Flammenwerfer")) {
             type = "Burn";

@@ -1,13 +1,15 @@
 import java.util.Scanner;
 
 public class CharacterCreation { //Our work is never over. ~Daft Punk
+    static Character input1 = new Character();
+    static Character input2 = new Character();
     public void setPlayers(int p1, int p2) {
         //Character Creation START
         Character player1 = new Character();
         Character player2 = new Character();
         
-        Character input1 = new Character();
-        Character input2 = new Character();
+        input1 = new Character();
+        input2 = new Character();
         
         Character LukeSkywalker = new Character();
         Character DarthVader = new Character();
@@ -79,7 +81,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
             input1 = player1;
             input2 = player2;
             spieler1 = "Spieler 1";
-            spieler2= "Spieler 2";
+            spieler2 = "Spieler 2";
         }
         else {
             input1 = player2;
@@ -87,6 +89,8 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
             spieler1 = "Spieler 2";
             spieler2 = "Spieler 1";
         }
+        
+        new DeveloperConsole();
         
         //Kampf an sich START
         fight: while(true) { //benutzt break fight; um die ganze Schleife jetzt zu beenden
@@ -105,12 +109,10 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                         input1.setCurrentAttack(p1attack = attackinput.nextInt()); //Geht wieder rüber zu class "Character", setzt input Variable "p1attack" ein.
                         input1.Attacks(); //setzt die damage values
                     
-                    
-                        if(input2.getAttacks()[p2attack-1].contains("schild") || input2.getAttacks()[p2attack-1].equals("Abwehr")) { //MUSS VOR SETLIFE SEIN!!! Sonst klappt es nicht. WAG ES JA NICHT WIEDER DEN CODE HIER ZU ZWEIFELN; SONST KRIEGT DER SPIELER SCHADEN
-                            input1.setFinalAttackDamage(0);   
+                        if(input2.getIsProtected()) { //MUSS VOR SETLIFE SEIN!!! Sonst klappt es nicht. WAG ES JA NICHT WIEDER DEN CODE HIER ZU ZWEIFELN; SONST KRIEGT DER SPIELER SCHADEN
+                            input1.setFinalAttackDamage(0);
                         }
-                    
-                    
+                        
                         input2.setLife(input2.getLife()-input1.getFinalAttackDamage()); //Fügt den Schaden hinzu
                         AttackOutput(input1, input2); //Printet ob man sich heilt oder ob man Schaden gemacht hat und wie viel
                     
@@ -136,6 +138,8 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                         break fight;
                     }
                 }
+                input2.setIsProtected(false);
+                DeveloperConsole.UpdateWindow();
                 
                 
                 checkBurn(input1, input2, p1attack, p2attack);
@@ -152,12 +156,10 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                             input2.setCurrentAttack(p2attack = attackinput.nextInt());
                             input2.Attacks();
                     
-                    
-                            if(input1.getAttacks()[p1attack-1].contains("schild") || input1.getAttacks()[p1attack-1].equals("Abwehr")) {
-                                input2.setFinalAttackDamage(0);   
+                             if(input1.getIsProtected()) {
+                                input2.setFinalAttackDamage(0);
                             }
-                    
-                    
+                            
                             input1.setLife(input1.getLife()-input2.getFinalAttackDamage());
                             AttackOutput(input2, input1);
                     
@@ -183,8 +185,11 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                             break fight;
                     }
                 }
+                input1.setIsProtected(false);
+                DeveloperConsole.UpdateWindow();
             }
-                
+            
+        DeveloperConsole.CloseWindow();
         //Kampf an sich STOP
     }
     
@@ -214,6 +219,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
             else {
                 input2.setLife(input2.getLife()-50);
                 System.out.println("\n" + input2.getName() + " hat 50 Leben an Brandschaden verloren. Noch " + input1.getBurnCounter() + " Runden verbleibend bis der Brandschaden aufhört.");
+                DeveloperConsole.UpdateWindow();
             }
         }
         else {

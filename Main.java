@@ -7,6 +7,7 @@ public class Main{ //MEINE MAIN METHODE WAR MAL SO SCHÖN :(
         
         
         String[] chars = {"Luke Skywalker", "Darth Vader", "Emperor Palpatine", "General Rahm Kota", "Leia Organa", "Han Solo", "Chewbacca", "Boba Fett", "Stormtrooper", "Rebel Soldier", "Kota Militia Soldier"};
+        
         int p1;
         int p2;
         System.out.println("Willkommen zum Spiel! \nSpieler 1, wähle deinen Charakter!");
