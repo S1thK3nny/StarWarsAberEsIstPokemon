@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class CharacterCreation { //Our work is never over. ~Daft Punk
     static Character input1 = new Character();
     static Character input2 = new Character();
+    static Item[] Items;
     public void setPlayers(int p1, int p2) {
         //Character Creation START
         Character player1 = new Character();
@@ -53,8 +54,14 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
         RebelSoldier.setAttacks("Blaster Angriff", "Thermal Detonator", "Schlag", "Kick");        
         MilitiaSoldier.setAttacks("Blaster Angriff", "Thermal Detonator", "Schlag", "Kick");
         
-        LukeSkywalker.setItems("Dies", 0, "ist", 0, "ein", 0, "Test!", 1);
-        Stormtrooper.setItems("Dies", 0, "ist", 0, "ein", 0, "Test!", 1);
+        Item Medpack = new Item("Medpack", "Heal");
+        Item Comlink = new Item("Comlink", "Damage");
+        Item Default = new Item("Default", "Damage");
+        
+        Item[] Items = {Medpack,Comlink, Default};
+        this.Items = Items;
+        LukeSkywalker.setItems(Comlink, 4, Medpack, 0, Medpack, 0, Medpack, 1);
+        //Stormtrooper.setItems("Dies", 0, "ist", 0, "ein", 0, "Test!", 1);
         //Character Setters STOP
         
         
@@ -141,7 +148,6 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                 input2.setIsProtected(false);
                 DeveloperConsole.UpdateWindow();
                 
-                
                 checkBurn(input1, input2, p1attack, p2attack);
                 p2: while(true) { //Zweite Spieler brauchen while schleifen um auf diese zurück zu callen wenn alle Items verbraucht wurden
                     System.out.println("\n" + spieler2 + ", wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
@@ -213,7 +219,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
     public void checkBurn(Character input1, Character input2, int p1attackinput, int p2attackinput) { //input1 = Brandverursacher, input2 = Opfer, p1attackinput = p1attack, p2attackinput = p2attack
         if(input1.getBurnCounter()>0) { //Wenn der Brandschaden noch aktiv ist
             input1.setBurnCounter(input1.getBurnCounter()-1); //Eins pro Runde runterstellen
-            if(input2.getAttacks()[p2attackinput-1].contains("schild") || input2.getAttacks()[p2attackinput-1].equals("Abwehr")) { //Falls Shield type aktiv ist
+            if(input2.getIsProtected()) { //Falls Shield type aktiv ist
                         System.out.println("\n" + input2.getName() + " hat den Brandschaden blockiert. Noch " + input1.getBurnCounter() + " Runden verbleibend bis der Brandschaden aufhört.");
                 }
             else {

@@ -2,9 +2,9 @@ import java.util.Scanner;
 
 public class Main{ //MEINE MAIN METHODE WAR MAL SO SCHÖN :( 
     public static void main() {
+        System.out.print('\u000C');
         CharacterCreation Creation = new CharacterCreation(); //Hier passiert die Charaktererstellung, so wie auch das kämpfen.
         Scanner input = new Scanner(System.in); //Scanner
-        
         
         String[] chars = {"Luke Skywalker", "Darth Vader", "Emperor Palpatine", "General Rahm Kota", "Leia Organa", "Han Solo", "Chewbacca", "Boba Fett", "Stormtrooper", "Rebel Soldier", "Kota Militia Soldier"};
         

@@ -20,11 +20,13 @@ public class Character {
     private String[] attacks = {attack1, attack2, attack3, attack4};
     private String type = "Damage";
     
-    private String item1 = "Placeholder";
-    private String item2 = "Placeholder";
-    private String item3 = "Placeholder";
-    private String item4 = "Placeholder";
-    private String[] items = {item1, item2, item3, item4};
+    Item Default = new Item("Default", "Damage");
+    
+    private Item item1 = Default;
+    private Item item2 = Default;
+    private Item item3 = Default;
+    private Item item4 = Default;
+    private Item[] items = {item1, item2, item3, item4};
     
     private int item1maxuse = 2;
     private int item2maxuse = 2;
@@ -42,6 +44,7 @@ public class Character {
     private int item = 0;
     private int BurnCounter = 0;
     private boolean isProtected = false;
+    private boolean isCurrent = false;
     //Default values STOP
     
     
@@ -62,7 +65,7 @@ public class Character {
         return attacks;
     }
     
-    public String[] getItems() {
+    public Item[] getItems() {
         return items;
     }
     
@@ -100,6 +103,9 @@ public class Character {
 
     public boolean getIsProtected() {
         return isProtected;
+    }
+    public boolean getIsCurrent() {
+        return isCurrent;
     }
     
     public String getTier() {
@@ -155,7 +161,7 @@ public class Character {
         this.attacks[3] = attack4;
     }
     
-    public void setItems(String item1, int item1maxuse, String item2, int item2maxuse, String item3, int item3maxuse, String item4, int item4maxuse) {
+    public void setItems(Item item1, int item1maxuse, Item item2, int item2maxuse, Item item3, int item3maxuse, Item item4, int item4maxuse) {
         this.items[0] = item1;
         this.items[1] = item2;
         this.items[2] = item3;
@@ -170,6 +176,10 @@ public class Character {
         this.itemtempuses[1] = item2maxuse;
         this.itemtempuses[2] = item3maxuse;
         this.itemtempuses[3] = item4maxuse;
+    }
+    
+    public void setItem(int id, Item item) {
+        this.items[id] = item;
     }
 
     public void setCurrentAttack(int attack) {
@@ -188,12 +198,24 @@ public class Character {
         this.isProtected = isProtected;
     }
     
+    public void setIsCurrent(boolean isCurrent) {
+        this.isCurrent = isCurrent;
+    }
+    
     public void setBurnCounter(int BurnCounter) {
         this.BurnCounter = BurnCounter;
     }
-    
+
     public void setItemTempUses(int itemtempuses) {
         this.itemtempuses[item-1] = itemtempuses;
+    }
+    
+    public void setItemDevTempUses(int id, int tempuses) {
+        itemtempuses[id] = tempuses;
+    }
+    
+    public void setItemDevMaxUses(int id, int maxuses) {
+        itemmaxuses[id] = maxuses;
     }
     //Setters STOP
     
@@ -259,15 +281,27 @@ public class Character {
     public void ItemUse() {
         while(true) {
             for(int i = 0; i<getItems().length; i++) { //Je nach Anzahl der Items, meist 4
-                    System.out.println((i+1) + ") " + "(" + getItemTempUses()[i] + "/" + getItemMaxUses()[i] + ") " + getItems()[i]); //Printet z.b. 1) Placeholder
+                    System.out.println((i+1) + ") " + "(" + getItemTempUses()[i] + "/" + getItemMaxUses()[i] + ") " + getItems()[i].name); //Printet z.b. 1) Placeholder
                     }
             int iteminput;
             setCurrentItem(iteminput = this.iteminput.nextInt());
             if(getItemTempUses()[item-1]>0) {
                 setItemTempUses(getItemTempUses()[item-1]-1);
-                System.out.println("\n" + getName() + " benutzt das Item " + getItems()[item-1] + "! " + "Noch " + getItemTempUses()[item-1] + " mal kann die Attacke verwendet werden."); //Literally der gleiche Scheiß wie in Attacks()
-                setLife(getLife()+500);
-                System.out.println("\nPLACEHOLDER: " + getName() + " hat 500 Leben geheilt! " + getName() + " hat jetzt " + getLife() + " Leben, davor " + (getLife()-500));
+                
+                switch(getItems()[item-1].type) {
+                    case "Heal":
+                        setLife(getLife()+250);
+                        System.out.println("\n" + getName() + " hat 250 Leben geheilt! " + getName() + " hat jetzt " + getLife() + " Leben, davor " + (getLife()-250));
+                        break;
+                    case "Damage":
+                        System.out.println("Es hat nichts gebracht");
+                        break;
+                    default:
+                        System.out.println(getItems()[item-1].name + " has no type!");
+                        break;
+                }
+            
+                System.out.println("\n" + getName() + " benutzt das Item " + getItems()[item-1].name + "! " + "Noch " + getItemTempUses()[item-1] + " mal kann das Item verwendet werden."); //Literally der gleiche Scheiß wie in Attacks()
                 break;
             }
             else {

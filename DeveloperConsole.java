@@ -14,6 +14,8 @@ public class DeveloperConsole {
     static JTextField JTextp2Life;
     static JButton changeHealthP1;
     static JButton changeHealthP2;
+    static JButton changeItemsP1;
+    static JButton changeItemsP2;
     static JTextField JTextp1IsProtected;
     static JTextField JTextp2IsProtected;
     static JTextField JTextp1BurnCounter;
@@ -38,6 +40,8 @@ public class DeveloperConsole {
         changeHealthP2 = new JButton("Change health");
         JTextp1BurnCounter = new JTextField("BurnCounter for enemy: " + p1BurnCounter);
         JTextp2BurnCounter = new JTextField("BurnCounter for enemy: " + p2BurnCounter);
+        changeItemsP1 = new JButton("Change items");
+        changeItemsP2 = new JButton("Change items");
         
         
         JTextnameP1.setBounds(0,0, 400,30); //x axis, y axis, width, height  
@@ -63,6 +67,8 @@ public class DeveloperConsole {
         JTextp1BurnCounter.setEditable(false);
         JTextp2BurnCounter.setEditable(false);
         
+        changeItemsP1.setBounds(30,150, 370,30); //x axis, y axis, width, height  
+        changeItemsP2.setBounds(30,350, 370,30);
                   
         devconsole.setSize(400,500);//400 width and 500 height  
         devconsole.setLayout(null);//using no layout managers  
@@ -79,9 +85,13 @@ public class DeveloperConsole {
         devconsole.add(JTextp2IsProtected);
         devconsole.add(JTextp1BurnCounter);
         devconsole.add(JTextp2BurnCounter);
+        devconsole.add(changeItemsP1);
+        devconsole.add(changeItemsP2);
         
         changeHealth(changeHealthP1, CharacterCreation.input1);
         changeHealth(changeHealthP2, CharacterCreation.input2);
+        changeItems(changeItemsP1, CharacterCreation.input1);
+        changeItems(changeItemsP2, CharacterCreation.input2);
     }
     
     public static void CloseWindow() {
@@ -102,6 +112,7 @@ public class DeveloperConsole {
         JTextp2IsProtected.setText("Is Protected: " + p2IsProtected);
         JTextp1BurnCounter.setText("BurnCounter for enemy: " + p1BurnCounter);
         JTextp2BurnCounter.setText("BurnCounter for enemy: " + p2BurnCounter);
+        changeItemsWindow.UpdateCIW();
     }
     
     public void changeHealth(JButton button, Character player) {
@@ -110,6 +121,16 @@ public class DeveloperConsole {
                  // this makes sure the button you are pressing is the button variable
                  if(buttonpress.getSource() == button) {
                     new changeHealthWindow(player);
+                  }
+           }
+        });
+    }
+    
+    public void changeItems(JButton button, Character player) {
+        button.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent buttonpress) {
+                 if(buttonpress.getSource() == button) {
+                    new changeItemsWindow(player);
                   }
            }
         });
