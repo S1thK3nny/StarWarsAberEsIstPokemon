@@ -73,8 +73,7 @@ public class changeItemsWindow { //DIE ALLE MÜSSEN AUSGEFÜLLT SEIN; SONST NULL
         JButton maxbutton4 = new JButton("Change Maxusage");
         
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        CIW.setSize(600,500); 
-        CIW.setLayout(null);//using no layout managers  
+        CIW.setSize(600,500);  
         CIW.setVisible(true);//making the frame visible  
         CIW.setResizable(false);
         
