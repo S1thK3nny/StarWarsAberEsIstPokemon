@@ -1,5 +1,6 @@
 import java.lang.Math;
 import java.util.Scanner;
+import java.util.Random;
 
 public class Character {
     //Default values START
@@ -7,6 +8,7 @@ public class Character {
     private int damage = 100;
     private double attackspeed = 1.0;
     private int life = 500;
+    private int maxlife = 500;
     private boolean forcesensitive = false;
     private double tempattackdamage = 0;
     private int finalattackdamage = 0; //Muss 0 sein, falls man sich heilt, dann darf man ja kein Schaden abziehen. UPDATE: Klappt wohl trotzdem nicht, huh. Egal, setze einfach den finalattackdamage bei dem Typen selber auf 0
@@ -55,6 +57,10 @@ public class Character {
     
     public int getLife() {
         return life;
+    }
+    
+    public int getMaxLife() {
+        return maxlife;
     }
     
     public int getDamage() {
@@ -127,16 +133,19 @@ public class Character {
         this.tier = tier;
         if(tier.equals("TIER1")) {
             this.life = 850 + (int)(Math.random() * ((1100 - 850) + 1)); //Danke für die Random Idee, Jan! :D
+            this.maxlife = this.life;
             this.damage = 200 + (int)(Math.random() * ((350 - 200) + 1));
             this.attackspeed = 1.0 + (Math.random() * (1.35-1.0));
         }
         else if(tier.equals("TIER2")) {
             this.life = 1000 + (int)(Math.random() * ((2100 - 1000) + 1));
+            this.maxlife = this.life;
             this.damage = 350 + (int)(Math.random() * ((500 - 350) + 1));
             this.attackspeed = 1.15 + (Math.random() * (1.6-1.15));
         }
         else if(tier.equals("TIER3")) {
             this.life = 1900 + (int)(Math.random() * ((2800 - 1900) + 1));
+            this.maxlife = this.life;
             this.damage = 500 + (int)(Math.random() * ((750 - 500) + 1));
             this.attackspeed = 1.45 + (Math.random() * (2-1.45));
         }
@@ -226,7 +235,7 @@ public class Character {
             return;
         }
         hitchance = Math.random() * 100; //generiert random hitchance pro Angriff
-        System.out.println(getName() + " benutzt " + getAttacks()[attack-1]);
+        System.out.println("\n" + getName() + " benutzt " + getAttacks()[attack-1]);
         if(getAttacks()[attack-1].equals("Lichtschwert Angriff")) { //Again, muss -1 sein, da es ein Array ist. Wird pro Runde neu generiert, da Attacks() in der Schleife neu ausgeführt wird
             type = "Damage";
             tempattackdamage = damage * 1.0;
@@ -278,13 +287,26 @@ public class Character {
     }
     
     Scanner iteminput = new Scanner(System.in);
-    public void ItemUse() {
+    public void ItemUse(boolean isAI) {
         while(true) {
-            for(int i = 0; i<getItems().length; i++) { //Je nach Anzahl der Items, meist 4
+            if(!isAI) {
+                for(int i = 0; i<getItems().length; i++) { //Je nach Anzahl der Items, meist 4
                     System.out.println((i+1) + ") " + "(" + getItemTempUses()[i] + "/" + getItemMaxUses()[i] + ") " + getItems()[i].name); //Printet z.b. 1) Placeholder
-                    }
-            int iteminput;
-            setCurrentItem(iteminput = this.iteminput.nextInt());
+                }
+                int iteminput;
+                setCurrentItem(iteminput = this.iteminput.nextInt());
+            }
+            else {
+                int aiCItem = checkforHealItem();
+                if(checkforHealItem()>0) {
+                    setCurrentItem(aiCItem+1);
+                }
+                else {
+                    System.out.println("ERROR! RETURNING!" );
+                    return;
+                }
+            }
+            
             if(getItemTempUses()[item-1]>0) {
                 setItemTempUses(getItemTempUses()[item-1]-1);
                 
@@ -294,7 +316,7 @@ public class Character {
                         System.out.println("\n" + getName() + " hat 250 Leben geheilt! " + getName() + " hat jetzt " + getLife() + " Leben, davor " + (getLife()-250));
                         break;
                     case "Damage":
-                        System.out.println("Es hat nichts gebracht");
+                        System.out.println("Item: Es hat nichts gebracht");
                         break;
                     default:
                         System.out.println(getItems()[item-1].name + " has no type!");
@@ -309,5 +331,34 @@ public class Character {
                 continue;
             }
         }
+    }
+    
+    public int checkforHealAttack() {
+        int healExists = 0;
+        for(int i=0; i<getAttacks().length; i++) {
+            if(getAttacks()[i].contains("Stimpacks") || getAttacks()[i].equals("Machtheilung")) {
+                healExists = i;   
+            }
+        }
+        return healExists;
+    }
+    
+    public int checkforHealItem() {
+        int healExists = 0;
+        for(int i=0; i<getItems().length; i++) {
+            if(getItems()[i].type.equals("Heal") && getItemTempUses()[i]>0) {
+                healExists = i;
+            }
+        }
+        return healExists;
+    }
+    
+    public int chooseAttack() {
+        Random random = new Random();
+        int rndmattack = random.nextInt(4)+1;
+        while(getAttacks()[rndmattack-1].contains("Stimpacks") || getAttacks()[rndmattack-1].equals("Machtheilung")) {
+            rndmattack = random.nextInt(4);
+        }
+        return rndmattack;
     }
 }

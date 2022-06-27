@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 public class DeveloperConsole {
     static int p1Life; //müssen static sein für UpdateWindow und UpdateWindow muss static sein für CharacterCreation
     static int p2Life;
+    static int p1maxLife;
+    static int p2maxLife;
     static boolean p1IsProtected;
     static boolean p2IsProtected;
     static int p1BurnCounter;
@@ -27,13 +29,15 @@ public class DeveloperConsole {
         JTextField JTextnameP2 = new JTextField(CharacterCreation.input2.getName());
         int p1Life = CharacterCreation.input1.getLife();
         int p2Life = CharacterCreation.input2.getLife();
+        int p1maxLife = CharacterCreation.input1.getMaxLife();
+        int p2maxLife = CharacterCreation.input2.getMaxLife();
         boolean p1IsProtected = CharacterCreation.input1.getIsProtected();
         boolean p2IsProtected = CharacterCreation.input2.getIsProtected();
         int p1BurnCounter = CharacterCreation.input1.getBurnCounter();
         int p2BurnCounter = CharacterCreation.input2.getBurnCounter();
         
-        JTextp1Life = new JTextField("Health: " + p1Life);
-        JTextp2Life = new JTextField("Health: " + p2Life);
+        JTextp1Life = new JTextField("Health: " + p1Life + "\tMax Health: " + p1maxLife);
+        JTextp2Life = new JTextField("Health: " + p2Life + "\tMax Health: " + p2maxLife);
         JTextp1IsProtected = new JTextField("Is Protected: " + p1IsProtected);
         JTextp2IsProtected = new JTextField("Is Protected: " + p2IsProtected);
         changeHealthP1 = new JButton("Change health");
@@ -101,13 +105,15 @@ public class DeveloperConsole {
     public static void UpdateWindow() {
         p1Life = CharacterCreation.input1.getLife();
         p2Life = CharacterCreation.input2.getLife();
+        p1maxLife = CharacterCreation.input1.getMaxLife();
+        p2maxLife = CharacterCreation.input2.getMaxLife();
         p1IsProtected = CharacterCreation.input1.getIsProtected();
         p2IsProtected = CharacterCreation.input2.getIsProtected();
         p1BurnCounter = CharacterCreation.input1.getBurnCounter();
         p2BurnCounter = CharacterCreation.input2.getBurnCounter();
         
-        JTextp1Life.setText("Health: " + p1Life);
-        JTextp2Life.setText("Health: " + p2Life);
+        JTextp1Life.setText("Health: " + p1Life + "\tMax Health: " + p1maxLife);
+        JTextp2Life.setText("Health: " + p2Life + "\tMax Health: " + p2maxLife);
         JTextp1IsProtected.setText("Is Protected: " + p1IsProtected);
         JTextp2IsProtected.setText("Is Protected: " + p2IsProtected);
         JTextp1BurnCounter.setText("BurnCounter for enemy: " + p1BurnCounter);

@@ -1,10 +1,11 @@
 import java.util.Scanner;
+import java.util.Random;
 
 public class CharacterCreation { //Our work is never over. ~Daft Punk
     static Character input1 = new Character();
     static Character input2 = new Character();
     static Item[] Items;
-    public void setPlayers(int p1, int p2) {
+    public void setPlayers(int p1, int p2, boolean bothAreHuman) {
         //Character Creation START
         Character player1 = new Character();
         Character player2 = new Character();
@@ -81,18 +82,23 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
         int p2iteminput;
         int menuinputp1;
         int menuinputp2;
+        int input1healthpercent;
+        int input2healthpercent;
+        boolean input2isAI = true;
         String spieler1;
         String spieler2;
         
         if(player1.getAttackSpeed()>player2.getAttackSpeed())  {
             input1 = player1;
             input2 = player2;
+            input2isAI = true;
             spieler1 = "Spieler 1";
             spieler2 = "Spieler 2";
         }
         else {
             input1 = player2;
             input2 = player1;
+            input2isAI = false;
             spieler1 = "Spieler 2";
             spieler2 = "Spieler 1";
         }
@@ -102,101 +108,169 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
         //Kampf an sich START
         fight: while(true) { //benutzt break fight; um die ganze Schleife jetzt zu beenden
             Scanner attackinput = new Scanner(System.in);
-                checkBurn(input2, input1, p2attack, p1attack);
-                p1: while(true) {
-                System.out.println("\n" + spieler1 + ", wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
-                menuinputp1 = attackinput.nextInt();
-                switch(menuinputp1) {
-                    case 1:
-                    default: //Wenn der Spieler die Zahl 1 oder irgendwas außer 2 und 3 eingibt, sonst passiert nichts!
-                        System.out.println("\n" + spieler1 + ", wähle deine Attacke:");
-                        for(int i = 0; i<input1.getAttacks().length; i++) { //Je nach Anzahl der Attacken, meist 4
-                            System.out.println((i+1) + ") " + input1.getAttacks()[i]); //Printet z.b. 1) Melee
-                        }
-                        input1.setCurrentAttack(p1attack = attackinput.nextInt()); //Geht wieder rüber zu class "Character", setzt input Variable "p1attack" ein.
-                        input1.Attacks(); //setzt die damage values
-                    
-                        if(input2.getIsProtected()) { //MUSS VOR SETLIFE SEIN!!! Sonst klappt es nicht. WAG ES JA NICHT WIEDER DEN CODE HIER ZU ZWEIFELN; SONST KRIEGT DER SPIELER SCHADEN
-                            input1.setFinalAttackDamage(0);
-                        }
+            input1healthpercent = (input1.getMaxLife()/100)*30;
+            input2healthpercent = (input2.getMaxLife()/100)*30;
+            
+                checkBurn(input2, input1);
+                if(input2isAI || bothAreHuman) { //Wenn input1 der Spieler ist
+                    p1: while(true) {
+                    System.out.println("\n" + spieler1 + ", wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
+                    menuinputp1 = attackinput.nextInt();
+                    switch(menuinputp1) {
+                        case 1:
+                        default: //Wenn der Spieler die Zahl 1 oder irgendwas außer 2 und 3 eingibt, sonst passiert nichts!
+                            System.out.println("\n" + spieler1 + ", wähle deine Attacke:");
+                            for(int i = 0; i<input1.getAttacks().length; i++) { //Je nach Anzahl der Attacken, meist 4
+                                System.out.println((i+1) + ") " + input1.getAttacks()[i]); //Printet z.b. 1) Melee
+                            }
+                            input1.setCurrentAttack(p1attack = attackinput.nextInt()); //Geht wieder rüber zu class "Character", setzt input Variable "p1attack" ein.
+                            
+                            AttackShit(input1, input2);
                         
-                        input2.setLife(input2.getLife()-input1.getFinalAttackDamage()); //Fügt den Schaden hinzu
-                        AttackOutput(input1, input2); //Printet ob man sich heilt oder ob man Schaden gemacht hat und wie viel
-                    
-                        if(input2.getLife()<0) { //Wenn Spieler 2 0 HP hat
-                            System.out.println("\nGlückwunsch, " + spieler1 + ", du hast gewonnen!");
+                            if(input2.getLife()<=0) { //Wenn Spieler 2 0 HP hat
+                                System.out.println("\nGlückwunsch, " + spieler1 + ", du hast gewonnen!");
+                                break fight;
+                            }
+                            break p1;
+                            
+                        case 2:
+                            if(input1.getItemTempUses()[0]==0 && input1.getItemTempUses()[1]==0 && input1.getItemTempUses()[2]==0 && input1.getItemTempUses()[3]==0) {
+                                System.out.println("\nAlle Items verbraucht!");
+                                continue;
+                            }
+                            else {
+                                System.out.println("\n" + spieler1 + ", wähle dein Item aus:");
+                                input1.ItemUse(false);
+                                break p1;
+                            }
+                            
+                        case 3:
+                            System.out.println("\n" + input1.getName() + " ist geflohen! \n" + spieler2 + " gewinnt!");
                             break fight;
                         }
-                        break p1;
-                        
-                    case 2:
-                        if(input1.getItemTempUses()[0]==0 && input1.getItemTempUses()[1]==0 && input1.getItemTempUses()[2]==0 && input1.getItemTempUses()[3]==0) {
-                            System.out.println("\nAlle Items verbraucht!");
-                            continue;
-                        }
-                        else {
-                            System.out.println("\n" + spieler1 + ", wähle dein Item aus:");
-                            input1.ItemUse();
-                            break p1;
-                        }
-                        
-                    case 3:
-                        System.out.println("\n" + input1.getName() + " ist geflohen! \n" + spieler2 + " gewinnt!");
+                    }
+                }
+                else { //Wenn input2 der Spieler ist
+                    AITurn(input1, input2, input1healthpercent);
+                    if(input2.getLife()<=0) { //Wenn Spieler 2 0 HP hat
+                        System.out.println("\nDu hast verloren, " + spieler2 + "!");
                         break fight;
                     }
                 }
                 input2.setIsProtected(false);
                 DeveloperConsole.UpdateWindow();
                 
-                checkBurn(input1, input2, p1attack, p2attack);
-                p2: while(true) { //Zweite Spieler brauchen while schleifen um auf diese zurück zu callen wenn alle Items verbraucht wurden
-                    System.out.println("\n" + spieler2 + ", wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
-                    menuinputp2 = attackinput.nextInt();
-                    switch(menuinputp2) {
-                        case 1:
-                        default:
-                            System.out.println("\n" + spieler2 + ", wähle deine Attacke:");
-                            for(int i = 0; i<input2.getAttacks().length; i++) {
-                                System.out.println((i+1) + ") " + input2.getAttacks()[i]);
-                            }
-                            input2.setCurrentAttack(p2attack = attackinput.nextInt());
-                            input2.Attacks();
-                    
-                             if(input1.getIsProtected()) {
-                                input2.setFinalAttackDamage(0);
-                            }
-                            
-                            input1.setLife(input1.getLife()-input2.getFinalAttackDamage());
-                            AttackOutput(input2, input1);
-                    
-                            if(input1.getLife()<0) {
-                                System.out.println("\nGlückwunsch, " + spieler2 + ", du hast gewonnen!");
-                                break fight;
-                            }
-                            break p2;
+                checkBurn(input1, input2);
+                if(!input2isAI || bothAreHuman) { //Wenn input2 der Spieler ist
+                    p2: while(true) { //Zweite Spieler brauchen while schleifen um auf diese zurück zu callen wenn alle Items verbraucht wurden
+                        System.out.println("\n" + spieler2 + ", wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
+                        menuinputp2 = attackinput.nextInt();
+                        switch(menuinputp2) {
+                            case 1:
+                            default:
+                                System.out.println("\n" + spieler2 + ", wähle deine Attacke:");
+                                for(int i = 0; i<input2.getAttacks().length; i++) {
+                                    System.out.println((i+1) + ") " + input2.getAttacks()[i]);
+                                }
+                                input2.setCurrentAttack(p2attack = attackinput.nextInt());
+                                
+                                AttackShit(input2, input1);
                         
-                        case 2:
-                            if(input2.getItemTempUses()[0]==0 && input2.getItemTempUses()[1]==0 && input2.getItemTempUses()[2]==0 && input2.getItemTempUses()[3]==0) {
-                                System.out.println("\nAlle Items verbraucht!");
-                                continue p2;
-                            }
-                            else {
-                                System.out.println("\n" + spieler2 + ", wähle dein Item aus:");
-                                input2.ItemUse();
+                                if(input1.getLife()<=0) {
+                                    System.out.println("\nGlückwunsch, " + spieler2 + ", du hast gewonnen!");
+                                    break fight;
+                                }
                                 break p2;
-                            }
-                        
-                        case 3:
-                            System.out.println("\n" + input2.getName() + " ist geflohen! \n" + spieler1 + " gewinnt!");
-                            break fight;
+                            
+                            case 2:
+                                if(input2.getItemTempUses()[0]==0 && input2.getItemTempUses()[1]==0 && input2.getItemTempUses()[2]==0 && input2.getItemTempUses()[3]==0) {
+                                    System.out.println("\nAlle Items verbraucht!");
+                                    continue p2;
+                                }
+                                else {
+                                    System.out.println("\n" + spieler2 + ", wähle dein Item aus:");
+                                    input2.ItemUse(false);
+                                    break p2;
+                                }
+                            
+                            case 3:
+                                System.out.println("\n" + input2.getName() + " ist geflohen! \n" + spieler1 + " gewinnt!");
+                                break fight;
+                        }
+                    }
+                }
+                else { //Wenn input1 der Spieler ist
+                    AITurn(input2, input1, input2healthpercent);
+                    if(input1.getLife()<=0) { //Wenn Spieler 2 0 HP hat
+                        System.out.println("\nDu hast verloren, " + spieler1 + "!");
+                        break fight;
                     }
                 }
                 input1.setIsProtected(false);
                 DeveloperConsole.UpdateWindow();
-            }
+        }
             
         DeveloperConsole.CloseWindow();
         //Kampf an sich STOP
+    }
+    
+    public void AITurn(Character input1, Character input2, int healthpercent) {
+        try
+            {
+                Thread.sleep(300);
+            }
+            catch (InterruptedException ie)
+            {
+                ie.printStackTrace();
+            }
+        boolean needsHeal = false;
+        int test = input1.chooseAttack();
+        //System.out.println(test);
+        if(input1.getLife()<=healthpercent) {
+            needsHeal = true;
+        }
+        //System.out.println(input1.getName() + " needsHeal: " + needsHeal + " healthpercent " + healthpercent);
+        if(needsHeal && checking(input1)) {
+            Random random = new Random();
+            boolean randomBoolean = random.nextBoolean();
+            if(input1.checkforHealAttack()>0 && randomBoolean) {
+                int aiCAttack = input1.checkforHealAttack();
+                //System.out.println(input1.getName() + " HAS AN ATTACK THAT HEALS! " + input1.getAttacks()[aiCAttack] + "\nRandomboolean: " + randomBoolean);
+                input1.setCurrentAttack(aiCAttack+1); //Muss +1 sein, da CurrentAttack automatisch -1 macht
+                AttackShit(input1, input2);
+            }
+            else if (input1.checkforHealItem()>0) {
+                //System.out.println(input1.getName() + " WILL USE HEAL ITEM!" + "\nRandomboolean: " + randomBoolean);
+                input1.ItemUse(true);
+            }
+            else {
+                input1.setCurrentAttack(test);
+                AttackShit(input1, input2);
+            }
+        }
+        else {
+            //System.out.println(input1.getName() + " IS ATTACKING");
+            input1.setCurrentAttack(test);
+            AttackShit(input1, input2);
+        }
+    }
+    
+    public boolean checking(Character input) {
+        if(input.checkforHealAttack()>0 || input.checkforHealItem()>0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    public void AttackShit(Character input1, Character input2) {
+        input1.Attacks(); //setzt die damage values
+        if(input2.getIsProtected()) { //MUSS VOR SETLIFE SEIN!!! Sonst klappt es nicht. WAG ES JA NICHT WIEDER DEN CODE HIER ZU ZWEIFELN; SONST KRIEGT DER SPIELER SCHADEN
+            input1.setFinalAttackDamage(0);
+        }
+        input2.setLife(input2.getLife()-input1.getFinalAttackDamage()); //Fügt den Schaden hinzu
+        AttackOutput(input1, input2); //Printet ob man sich heilt oder ob man Schaden gemacht hat und wie viel
     }
     
     public void AttackOutput(Character input1, Character input2) {
@@ -216,7 +290,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                     }
     }
     
-    public void checkBurn(Character input1, Character input2, int p1attackinput, int p2attackinput) { //input1 = Brandverursacher, input2 = Opfer, p1attackinput = p1attack, p2attackinput = p2attack
+    public void checkBurn(Character input1, Character input2) { //input1 = Brandverursacher, input2 = Opfer
         if(input1.getBurnCounter()>0) { //Wenn der Brandschaden noch aktiv ist
             input1.setBurnCounter(input1.getBurnCounter()-1); //Eins pro Runde runterstellen
             if(input2.getIsProtected()) { //Falls Shield type aktiv ist
