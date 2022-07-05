@@ -15,19 +15,20 @@ public class Character {
     private double hitchance = Math.random() * 100;
     private String tier = "TIER1";
     
-    private String attack1 = "Melee";
-    private String attack2 = "Kick";
-    private String attack3 = "Bite";
-    private String attack4 = "Spit";
-    private String[] attacks = {attack1, attack2, attack3, attack4};
-    private String type = "Damage";
+    Attack ADefault = new Attack("Default", "Damage");
     
-    Item Default = new Item("Default", "Damage");
+    private Attack attack1 = ADefault;
+    private Attack attack2 = ADefault;
+    private Attack attack3 = ADefault;
+    private Attack attack4 = ADefault;
+    private Attack[] attacks = {attack1, attack2, attack3, attack4};
     
-    private Item item1 = Default;
-    private Item item2 = Default;
-    private Item item3 = Default;
-    private Item item4 = Default;
+    Item IDefault = new Item("Default", "Damage");
+    
+    private Item item1 = IDefault;
+    private Item item2 = IDefault;
+    private Item item3 = IDefault;
+    private Item item4 = IDefault;
     private Item[] items = {item1, item2, item3, item4};
     
     private int item1maxuse = 2;
@@ -67,7 +68,7 @@ public class Character {
         return damage;
     }
     
-    public String[] getAttacks() {
+    public Attack[] getAttacks() {
         return attacks;
     }
     
@@ -89,10 +90,6 @@ public class Character {
     
     public int getFinalAttackDamage() {
         return finalattackdamage;
-    }
-    
-    public String getType() {
-        return type;
     }
     
     public double getAttackSpeed() {
@@ -163,7 +160,7 @@ public class Character {
     
     //Attack Section
     
-    public void setAttacks(String attack1, String attack2, String attack3, String attack4) {
+    public void setAttacks(Attack attack1, Attack attack2, Attack attack3, Attack attack4) {
         this.attacks[0] = attack1;
         this.attacks[1] = attack2;
         this.attacks[2] = attack3;
@@ -235,30 +232,25 @@ public class Character {
             return;
         }
         hitchance = Math.random() * 100; //generiert random hitchance pro Angriff
-        System.out.println("\n" + getName() + " benutzt " + getAttacks()[attack-1]);
-        if(getAttacks()[attack-1].equals("Lichtschwert Angriff")) { //Again, muss -1 sein, da es ein Array ist. Wird pro Runde neu generiert, da Attacks() in der Schleife neu ausgeführt wird
-            type = "Damage";
+        System.out.println("\n" + getName() + " benutzt " + getAttacks()[attack-1].name);
+        if(getAttacks()[attack-1].name.equals("Lichtschwert Angriff")) { //Again, muss -1 sein, da es ein Array ist. Wird pro Runde neu generiert, da Attacks() in der Schleife neu ausgeführt wird
             tempattackdamage = damage * 1.0;
             finalattackdamage = (int)tempattackdamage;
         }
-        else if(getAttacks()[attack-1].equals("Stimpacks") || getAttacks()[attack-1].equals("Machtheilung")) {
-            type = "Heal";
+        else if(getAttacks()[attack-1].type.equals("Heal")) {
             setLife(getLife()+250);
             setFinalAttackDamage(0); //Wenn dies nicht der Fall ist, dann fügt der Spieler Schaden hinzu. Zu OP
         }
-        else if(getAttacks()[attack-1].contains("schild") || getAttacks()[attack-1].equals("Abwehr")) {
-            type = "Shield";
+        else if(getAttacks()[attack-1].type.equals("Shield")) {
             setFinalAttackDamage(0); //Wenn dies nicht der Fall ist, dann fügt der Spieler Schaden hinzu. Zu OP
             isProtected = true;
         }
-        else if(getAttacks()[attack-1].equals("Flammenwerfer")) {
-            type = "Burn";
+        else if(getAttacks()[attack-1].type.equals("Burn")) {
             BurnCounter = 4;
             tempattackdamage = damage * 1.0;
             finalattackdamage = (int)tempattackdamage;
         }
         else { //Ist immer nur mal 1
-            type = "Damage";
             double rndm = 0.8 + (Math.random() * (1.2-0.8));
             tempattackdamage = damage * rndm;
             finalattackdamage = (int)tempattackdamage;
@@ -266,19 +258,19 @@ public class Character {
         
         switch(tier) { //je nach Tier ist die chance nicht zu hitten größer
             case "TIER1":
-                if(hitchance<20 && type == "Damage") {
+                if(hitchance<20 && getAttacks()[attack-1].type.equals("Damage")) {
                     finalattackdamage = 0;
                     System.out.println("\nDie Attacke von " + getName() + " ging daneben!");
                 }
                 break;
             case "TIER2":
-                if(hitchance<15 && type == "Damage") {
+                if(hitchance<15 && getAttacks()[attack-1].type.equals("Damage")) {
                     finalattackdamage = 0;
                     System.out.println("\nDie Attacke von " + getName() + " ging daneben!");
                 }
                 break;
             case "TIER3":
-                if(hitchance<10 && type == "Damage") {
+                if(hitchance<10 && getAttacks()[attack-1].type.equals("Damage")) {
                     finalattackdamage = 0;
                     System.out.println("\nDie Attacke von " + getName() + " ging daneben!");
                 }
@@ -336,7 +328,7 @@ public class Character {
     public int checkforHealAttack() {
         int healExists = 0;
         for(int i=0; i<getAttacks().length; i++) {
-            if(getAttacks()[i].contains("Stimpacks") || getAttacks()[i].equals("Machtheilung")) {
+            if(getAttacks()[i].type.equals("Heal")) {
                 healExists = i;   
             }
         }
@@ -356,7 +348,7 @@ public class Character {
     public int chooseAttack() {
         Random random = new Random();
         int rndmattack = random.nextInt(4)+1;
-        while(getAttacks()[rndmattack-1].contains("Stimpacks") || getAttacks()[rndmattack-1].equals("Machtheilung")) {
+        while(getAttacks()[rndmattack-1].type.equals("Heal")) {
             rndmattack = random.nextInt(4);
         }
         return rndmattack;

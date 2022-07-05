@@ -43,17 +43,44 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
         RebelSoldier.setStats("Rebel Soldier", "TIER1", false);
         MilitiaSoldier.setStats("Kota Militia Soldier", "TIER1", false);
         
-        LukeSkywalker.setAttacks("Lichtschwert Angriff", "Machtschub", "Abwehr", "Machtheilung");
-        DarthVader.setAttacks("Lichtschwert Angriff", "Machtschub", "Machtwürgung", "Lichtschwert Wurf");
-        Palpatine.setAttacks("Lichtschwert Angriff", "Machtblitz", "Machtwurf", "Dunkle Aura");
-        RahmKota.setAttacks("Lichtschwert Angriff", "Militia Unterstützung", "Machtschub", "Machtschild");
-        LeiaOrgana.setAttacks("Blaster Angriff", "Blaster Schnellfeuer", "Hoffnung", "Stimpacks");
-        HanSolo.setAttacks("Blaster Angriff", "Genauigkeit", "Sprengsatz", "Scharfschützenschuss");
-        Chewbacca.setAttacks("Armbrust Schuss", "Armbrust Multi-Schuss", "Wookie Wut", "Granate");
-        BobaFett.setAttacks("Blaster Angriff", "Flammenwerfer", "Handgelenkrakete", "Detpack");
-        Stormtrooper.setAttacks("Blaster Angriff", "Thermal Detonator", "Schlag", "Kick");
-        RebelSoldier.setAttacks("Blaster Angriff", "Thermal Detonator", "Schlag", "Kick");        
-        MilitiaSoldier.setAttacks("Blaster Angriff", "Thermal Detonator", "Schlag", "Kick");
+        Attack LStrike = new Attack("Lichtschwert Angriff", "Damage");
+        Attack Machtschub = new Attack("Machtschub", "Damage");
+        Attack Abwehr = new Attack("Abwehr", "Shield");
+        Attack Machtheilung = new Attack("Machtheilung", "Heal");
+        Attack Machtwuergung = new Attack("Machtwürgung", "Damage");
+        Attack LThrow = new Attack("Lichtschwertwurf", "Damage");
+        Attack Machtblitz = new Attack("Machtblitz", "Damage");
+        Attack Machtwurf = new Attack("Machtwurf", "Damage");
+        Attack DAura = new Attack("Dunkle Aura", "Damage");
+        Attack MUnterstuetzung = new Attack("Militia Unterstützung", "Damage");
+        Attack Machtschild = new Attack("Machtschild", "Shield");
+        Attack BlasterSchnellfeuer = new Attack("Blaster Schnellfeuer", "Damage");
+        Attack Hoffnung = new Attack("Hoffnung", "Shield");
+        Attack Stimpacks = new Attack("Stimpacks", "Heal");
+        Attack Sprengsatz = new Attack("Sprengsatz", "Damage");
+        Attack ArmbrustSchuss = new Attack("ArmbrustSchuss", "Damage");
+        Attack ArmbrustMultiSchuss = new Attack("Armbrust Multi-Schuss", "Damage");
+        Attack WookieWut = new Attack("Wookie Wut", "Damage");
+        Attack Flammenwerfer = new Attack("Flammenwerfer", "Burn");
+        Attack Handgelenkrakete = new Attack("Handgelenkrakete", "Damage");
+        Attack Detpack = new Attack("Detpack", "Damage");
+        
+        Attack BlasterAngriff = new Attack("Blaster Angriff", "Damage");
+        Attack TherDet = new Attack("Thermal Detonator", "Damage");
+        Attack Schlag = new Attack("Schlag", "Damage");
+        Attack Kick = new Attack("Kick", "Damage");
+        
+        LukeSkywalker.setAttacks(LStrike, Machtschub, Abwehr, Machtheilung);
+        DarthVader.setAttacks(LStrike, Machtschub, Machtwuergung, LThrow);
+        Palpatine.setAttacks(LStrike, Machtblitz, Machtwurf, DAura);
+        RahmKota.setAttacks(LStrike, MUnterstuetzung, Machtschub, Machtschild);
+        LeiaOrgana.setAttacks(BlasterAngriff, BlasterSchnellfeuer, Hoffnung, Stimpacks);
+        HanSolo.setAttacks(BlasterAngriff, Stimpacks, Sprengsatz, BlasterSchnellfeuer);
+        Chewbacca.setAttacks(ArmbrustSchuss, ArmbrustMultiSchuss, WookieWut, TherDet);
+        BobaFett.setAttacks(BlasterAngriff, Flammenwerfer, Handgelenkrakete, Detpack);
+        Stormtrooper.setAttacks(BlasterAngriff, TherDet, Schlag, Kick);
+        RebelSoldier.setAttacks(BlasterAngriff, TherDet, Schlag, Kick);        
+        MilitiaSoldier.setAttacks(BlasterAngriff, TherDet, Schlag, Kick);
         
         Item Medpack = new Item("Medpack", "Heal");
         Item Comlink = new Item("Comlink", "Damage");
@@ -103,7 +130,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
             spieler2 = "Spieler 1";
         }
         
-        new DeveloperConsole();
+        new DeveloperConsole(true);
         
         //Kampf an sich START
         fight: while(true) { //benutzt break fight; um die ganze Schleife jetzt zu beenden
@@ -121,11 +148,11 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                         default: //Wenn der Spieler die Zahl 1 oder irgendwas außer 2 und 3 eingibt, sonst passiert nichts!
                             System.out.println("\n" + spieler1 + ", wähle deine Attacke:");
                             for(int i = 0; i<input1.getAttacks().length; i++) { //Je nach Anzahl der Attacken, meist 4
-                                System.out.println((i+1) + ") " + input1.getAttacks()[i]); //Printet z.b. 1) Melee
+                                System.out.println((i+1) + ") " + input1.getAttacks()[i].name); //Printet z.b. 1) Melee
                             }
                             input1.setCurrentAttack(p1attack = attackinput.nextInt()); //Geht wieder rüber zu class "Character", setzt input Variable "p1attack" ein.
                             
-                            AttackShit(input1, input2);
+                            AttackShit(input1, input2, p1attack);
                         
                             if(input2.getLife()<=0) { //Wenn Spieler 2 0 HP hat
                                 System.out.println("\nGlückwunsch, " + spieler1 + ", du hast gewonnen!");
@@ -170,11 +197,11 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                             default:
                                 System.out.println("\n" + spieler2 + ", wähle deine Attacke:");
                                 for(int i = 0; i<input2.getAttacks().length; i++) {
-                                    System.out.println((i+1) + ") " + input2.getAttacks()[i]);
+                                    System.out.println((i+1) + ") " + input2.getAttacks()[i].name);
                                 }
                                 input2.setCurrentAttack(p2attack = attackinput.nextInt());
                                 
-                                AttackShit(input2, input1);
+                                AttackShit(input2, input1, p2attack);
                         
                                 if(input1.getLife()<=0) {
                                     System.out.println("\nGlückwunsch, " + spieler2 + ", du hast gewonnen!");
@@ -237,7 +264,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                 int aiCAttack = input1.checkforHealAttack();
                 //System.out.println(input1.getName() + " HAS AN ATTACK THAT HEALS! " + input1.getAttacks()[aiCAttack] + "\nRandomboolean: " + randomBoolean);
                 input1.setCurrentAttack(aiCAttack+1); //Muss +1 sein, da CurrentAttack automatisch -1 macht
-                AttackShit(input1, input2);
+                AttackShit(input1, input2, aiCAttack);
             }
             else if (input1.checkforHealItem()>0) {
                 //System.out.println(input1.getName() + " WILL USE HEAL ITEM!" + "\nRandomboolean: " + randomBoolean);
@@ -245,13 +272,13 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
             }
             else {
                 input1.setCurrentAttack(test);
-                AttackShit(input1, input2);
+                AttackShit(input1, input2, test);
             }
         }
         else {
             //System.out.println(input1.getName() + " IS ATTACKING");
             input1.setCurrentAttack(test);
-            AttackShit(input1, input2);
+            AttackShit(input1, input2, test);
         }
     }
     
@@ -264,20 +291,20 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
         }
     }
     
-    public void AttackShit(Character input1, Character input2) {
+    public void AttackShit(Character input1, Character input2, int attack) {
         input1.Attacks(); //setzt die damage values
         if(input2.getIsProtected()) { //MUSS VOR SETLIFE SEIN!!! Sonst klappt es nicht. WAG ES JA NICHT WIEDER DEN CODE HIER ZU ZWEIFELN; SONST KRIEGT DER SPIELER SCHADEN
             input1.setFinalAttackDamage(0);
         }
         input2.setLife(input2.getLife()-input1.getFinalAttackDamage()); //Fügt den Schaden hinzu
-        AttackOutput(input1, input2); //Printet ob man sich heilt oder ob man Schaden gemacht hat und wie viel
+        AttackOutput(input1, input2, attack); //Printet ob man sich heilt oder ob man Schaden gemacht hat und wie viel
     }
     
-    public void AttackOutput(Character input1, Character input2) {
-        if(input1.getType().equals("Heal")) { //Falls die Attacke eine Heilung war.
+    public void AttackOutput(Character input1, Character input2, int attack) {
+        if(input1.getAttacks()[attack-1].type.equals("Heal")) { //Falls die Attacke eine Heilung war.
                         System.out.println("\n" + input1.getName() + " hat 250 Leben geheilt und hat somit jetzt " + input1.getLife() + " Leben.");
                     }
-                else if (input1.getType().equals("Shield")) { //Falls die Attacke blockt/abwehrt
+                else if (input1.getAttacks()[attack-1].type.equals("Shield")) { //Falls die Attacke blockt/abwehrt
                         System.out.println("\n" + input1.getName() + " ist für die nächste Runde geschützt.");
                 }
                 else {
@@ -301,9 +328,6 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                 System.out.println("\n" + input2.getName() + " hat 50 Leben an Brandschaden verloren. Noch " + input1.getBurnCounter() + " Runden verbleibend bis der Brandschaden aufhört.");
                 DeveloperConsole.UpdateWindow();
             }
-        }
-        else {
-            //Deine Mutter LMAOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
         }
     }
 }

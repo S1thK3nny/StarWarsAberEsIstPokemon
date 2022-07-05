@@ -22,9 +22,8 @@ public class DeveloperConsole {
     static JTextField JTextp2IsProtected;
     static JTextField JTextp1BurnCounter;
     static JTextField JTextp2BurnCounter;
-    public DeveloperConsole () {
-        JFrame devconsole =new JFrame("Developer Console");//creating instance of JFrame  
-        
+    public DeveloperConsole (boolean visible) {
+        JFrame devconsole = new JFrame("Developer Console");//creating instance of JFrame  
         JTextField JTextnameP1 = new JTextField(CharacterCreation.input1.getName());
         JTextField JTextnameP2 = new JTextField(CharacterCreation.input2.getName());
         int p1Life = CharacterCreation.input1.getLife();
@@ -76,7 +75,7 @@ public class DeveloperConsole {
                   
         devconsole.setSize(400,500);//400 width and 500 height  
         devconsole.setLayout(null);//using no layout managers  
-        devconsole.setVisible(true);//making the frame visible  
+        devconsole.setVisible(visible);//making the frame visible  
         devconsole.setResizable(false); //cant resize it
         
         devconsole.add(JTextnameP1);
