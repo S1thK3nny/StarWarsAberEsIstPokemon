@@ -16,9 +16,9 @@ public class Main{ //MEINE MAIN METHODE WAR MAL SO SCHÖN :(
         
         while(true) {
             String humanOrAi = input.nextLine();
-            if(humanOrAi.equals("J") || humanOrAi.equals("N")) {
+            if(humanOrAi.equalsIgnoreCase("J") || humanOrAi.equalsIgnoreCase("N")) {
                 System.out.print('\u000C');
-                if(humanOrAi.equals("J")) {
+                if(humanOrAi.equalsIgnoreCase("J")) {
                     allHumans = false;
                 }
                 break;

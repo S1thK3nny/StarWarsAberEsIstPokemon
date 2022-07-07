@@ -10,6 +10,8 @@ public class DeveloperConsole {
     static int p2maxLife;
     static boolean p1IsProtected;
     static boolean p2IsProtected;
+    static boolean p1UsedStun;
+    static boolean p2UsedStun;
     static int p1BurnCounter;
     static int p2BurnCounter;
     static JTextField JTextp1Life;
@@ -18,8 +20,8 @@ public class DeveloperConsole {
     static JButton changeHealthP2;
     static JButton changeItemsP1;
     static JButton changeItemsP2;
-    static JTextField JTextp1IsProtected;
-    static JTextField JTextp2IsProtected;
+    static JTextField JTextp1IsProtectedAndStunned;
+    static JTextField JTextp2IsProtectedAndStunned;
     static JTextField JTextp1BurnCounter;
     static JTextField JTextp2BurnCounter;
     public DeveloperConsole (boolean visible) {
@@ -32,13 +34,15 @@ public class DeveloperConsole {
         int p2maxLife = CharacterCreation.input2.getMaxLife();
         boolean p1IsProtected = CharacterCreation.input1.getIsProtected();
         boolean p2IsProtected = CharacterCreation.input2.getIsProtected();
+        boolean p1UsedStun = CharacterCreation.input1.getUsedStun();
+        boolean p2UsedStun = CharacterCreation.input2.getUsedStun();
         int p1BurnCounter = CharacterCreation.input1.getBurnCounter();
         int p2BurnCounter = CharacterCreation.input2.getBurnCounter();
         
         JTextp1Life = new JTextField("Health: " + p1Life + "\tMax Health: " + p1maxLife);
         JTextp2Life = new JTextField("Health: " + p2Life + "\tMax Health: " + p2maxLife);
-        JTextp1IsProtected = new JTextField("Is Protected: " + p1IsProtected);
-        JTextp2IsProtected = new JTextField("Is Protected: " + p2IsProtected);
+        JTextp1IsProtectedAndStunned = new JTextField("Is Protected: " + p1IsProtected + "\tIs Stunned: " + p2UsedStun); //p2 stun da wir fragen ob p1 gestunned ist, nicht, ob p1 stun benutzt hat
+        JTextp2IsProtectedAndStunned = new JTextField("Is Protected: " + p2IsProtected + "\tIs Stunned: " + p1UsedStun);
         changeHealthP1 = new JButton("Change health");
         changeHealthP2 = new JButton("Change health");
         JTextp1BurnCounter = new JTextField("BurnCounter for enemy: " + p1BurnCounter);
@@ -60,10 +64,10 @@ public class DeveloperConsole {
         changeHealthP1.setBounds(30,60, 370,30); //x axis, y axis, width, height  
         changeHealthP2.setBounds(30,260, 370,30);
         
-        JTextp1IsProtected.setBounds(30,90, 370,30); //x axis, y axis, width, height  
-        JTextp2IsProtected.setBounds(30,290, 370,30);
-        JTextp1IsProtected.setEditable(false);
-        JTextp2IsProtected.setEditable(false);
+        JTextp1IsProtectedAndStunned.setBounds(30,90, 370,30); //x axis, y axis, width, height  
+        JTextp2IsProtectedAndStunned.setBounds(30,290, 370,30);
+        JTextp1IsProtectedAndStunned.setEditable(false);
+        JTextp2IsProtectedAndStunned.setEditable(false);
         
         JTextp1BurnCounter.setBounds(30,120, 370,30); //x axis, y axis, width, height  
         JTextp2BurnCounter.setBounds(30,320, 370,30);
@@ -84,8 +88,8 @@ public class DeveloperConsole {
         devconsole.add(JTextp2Life);
         devconsole.add(changeHealthP1);
         devconsole.add(changeHealthP2);
-        devconsole.add(JTextp1IsProtected);
-        devconsole.add(JTextp2IsProtected);
+        devconsole.add(JTextp1IsProtectedAndStunned);
+        devconsole.add(JTextp2IsProtectedAndStunned);
         devconsole.add(JTextp1BurnCounter);
         devconsole.add(JTextp2BurnCounter);
         devconsole.add(changeItemsP1);
@@ -108,13 +112,15 @@ public class DeveloperConsole {
         p2maxLife = CharacterCreation.input2.getMaxLife();
         p1IsProtected = CharacterCreation.input1.getIsProtected();
         p2IsProtected = CharacterCreation.input2.getIsProtected();
+        p1UsedStun = CharacterCreation.input1.getUsedStun();
+        p2UsedStun = CharacterCreation.input2.getUsedStun();
         p1BurnCounter = CharacterCreation.input1.getBurnCounter();
         p2BurnCounter = CharacterCreation.input2.getBurnCounter();
         
         JTextp1Life.setText("Health: " + p1Life + "\tMax Health: " + p1maxLife);
         JTextp2Life.setText("Health: " + p2Life + "\tMax Health: " + p2maxLife);
-        JTextp1IsProtected.setText("Is Protected: " + p1IsProtected);
-        JTextp2IsProtected.setText("Is Protected: " + p2IsProtected);
+        JTextp1IsProtectedAndStunned.setText("Is Protected: " + p1IsProtected + "\tIs Stunned: " + p2UsedStun);
+        JTextp2IsProtectedAndStunned.setText("Is Protected: " + p2IsProtected + "\tIs Stunned: " + p1UsedStun);
         JTextp1BurnCounter.setText("BurnCounter for enemy: " + p1BurnCounter);
         JTextp2BurnCounter.setText("BurnCounter for enemy: " + p2BurnCounter);
         changeItemsWindow.UpdateCIW();

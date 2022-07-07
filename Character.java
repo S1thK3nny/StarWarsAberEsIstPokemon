@@ -48,6 +48,7 @@ public class Character {
     private int BurnCounter = 0;
     private boolean isProtected = false;
     private boolean isCurrent = false;
+    private boolean usedStun = false;
     //Default values STOP
     
     
@@ -107,8 +108,13 @@ public class Character {
     public boolean getIsProtected() {
         return isProtected;
     }
+    
     public boolean getIsCurrent() {
         return isCurrent;
+    }
+    
+    public boolean getUsedStun() {
+        return usedStun;
     }
     
     public String getTier() {
@@ -208,6 +214,10 @@ public class Character {
         this.isCurrent = isCurrent;
     }
     
+    public void setUsedStun(boolean usedStun) {
+        this.usedStun = usedStun;
+    }
+    
     public void setBurnCounter(int BurnCounter) {
         this.BurnCounter = BurnCounter;
     }
@@ -249,6 +259,9 @@ public class Character {
             BurnCounter = 4;
             tempattackdamage = damage * 1.0;
             finalattackdamage = (int)tempattackdamage;
+        }
+        else if(getAttacks()[attack-1].type.equals("Stun")) {
+            usedStun = true;
         }
         else { //Ist immer nur mal 1
             double rndm = 0.8 + (Math.random() * (1.2-0.8));

@@ -50,7 +50,6 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
         Attack Machtwuergung = new Attack("Machtwürgung", "Damage");
         Attack LThrow = new Attack("Lichtschwertwurf", "Damage");
         Attack Machtblitz = new Attack("Machtblitz", "Damage");
-        Attack Machtwurf = new Attack("Machtwurf", "Damage");
         Attack DAura = new Attack("Dunkle Aura", "Damage");
         Attack MUnterstuetzung = new Attack("Militia Unterstützung", "Damage");
         Attack Machtschild = new Attack("Machtschild", "Shield");
@@ -64,6 +63,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
         Attack Flammenwerfer = new Attack("Flammenwerfer", "Burn");
         Attack Handgelenkrakete = new Attack("Handgelenkrakete", "Damage");
         Attack Detpack = new Attack("Detpack", "Damage");
+        Attack Stun = new Attack("Stun", "Stun");
         
         Attack BlasterAngriff = new Attack("Blaster Angriff", "Damage");
         Attack TherDet = new Attack("Thermal Detonator", "Damage");
@@ -72,7 +72,7 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
         
         LukeSkywalker.setAttacks(LStrike, Machtschub, Abwehr, Machtheilung);
         DarthVader.setAttacks(LStrike, Machtschub, Machtwuergung, LThrow);
-        Palpatine.setAttacks(LStrike, Machtblitz, Machtwurf, DAura);
+        Palpatine.setAttacks(LStrike, Machtblitz, Stun, DAura);
         RahmKota.setAttacks(LStrike, MUnterstuetzung, Machtschub, Machtschild);
         LeiaOrgana.setAttacks(BlasterAngriff, BlasterSchnellfeuer, Hoffnung, Stimpacks);
         HanSolo.setAttacks(BlasterAngriff, Stimpacks, Sprengsatz, BlasterSchnellfeuer);
@@ -139,101 +139,107 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
             input2healthpercent = (input2.getMaxLife()/100)*30;
             
                 checkBurn(input2, input1);
-                if(input2isAI || bothAreHuman) { //Wenn input1 der Spieler ist
-                    p1: while(true) {
-                    System.out.println("\n" + spieler1 + ", wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
-                    menuinputp1 = attackinput.nextInt();
-                    switch(menuinputp1) {
-                        case 1:
-                        default: //Wenn der Spieler die Zahl 1 oder irgendwas außer 2 und 3 eingibt, sonst passiert nichts!
-                            System.out.println("\n" + spieler1 + ", wähle deine Attacke:");
-                            for(int i = 0; i<input1.getAttacks().length; i++) { //Je nach Anzahl der Attacken, meist 4
-                                System.out.println((i+1) + ") " + input1.getAttacks()[i].name); //Printet z.b. 1) Melee
-                            }
-                            input1.setCurrentAttack(p1attack = attackinput.nextInt()); //Geht wieder rüber zu class "Character", setzt input Variable "p1attack" ein.
+                if(!input2.getUsedStun()) {
+                    if(input2isAI || bothAreHuman) { //Wenn input1 der Spieler ist
+                        p1: while(true) {
+                        System.out.println("\n" + spieler1 + ", wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
+                        menuinputp1 = attackinput.nextInt();
+                        switch(menuinputp1) {
+                            case 1:
+                            default: //Wenn der Spieler die Zahl 1 oder irgendwas außer 2 und 3 eingibt, sonst passiert nichts!
+                                System.out.println("\n" + spieler1 + ", wähle deine Attacke:");
+                                for(int i = 0; i<input1.getAttacks().length; i++) { //Je nach Anzahl der Attacken, meist 4
+                                    System.out.println((i+1) + ") " + input1.getAttacks()[i].name); //Printet z.b. 1) Melee
+                                }
+                                input1.setCurrentAttack(p1attack = attackinput.nextInt()); //Geht wieder rüber zu class "Character", setzt input Variable "p1attack" ein.
+                                
+                                AttackShit(input1, input2, p1attack);
                             
-                            AttackShit(input1, input2, p1attack);
-                        
-                            if(input2.getLife()<=0) { //Wenn Spieler 2 0 HP hat
-                                System.out.println("\nGlückwunsch, " + spieler1 + ", du hast gewonnen!");
+                                if(input2.getLife()<=0) { //Wenn Spieler 2 0 HP hat
+                                    System.out.println("\nGlückwunsch, " + spieler1 + ", du hast gewonnen!");
+                                    break fight;
+                                }
+                                break p1;
+                                
+                            case 2:
+                                if(input1.getItemTempUses()[0]==0 && input1.getItemTempUses()[1]==0 && input1.getItemTempUses()[2]==0 && input1.getItemTempUses()[3]==0) {
+                                    System.out.println("\nAlle Items verbraucht!");
+                                    continue;
+                                }
+                                else {
+                                    System.out.println("\n" + spieler1 + ", wähle dein Item aus:");
+                                    input1.ItemUse(false);
+                                    break p1;
+                                }
+                                
+                            case 3:
+                                System.out.println("\n" + input1.getName() + " ist geflohen! \n" + spieler2 + " gewinnt!");
                                 break fight;
                             }
-                            break p1;
-                            
-                        case 2:
-                            if(input1.getItemTempUses()[0]==0 && input1.getItemTempUses()[1]==0 && input1.getItemTempUses()[2]==0 && input1.getItemTempUses()[3]==0) {
-                                System.out.println("\nAlle Items verbraucht!");
-                                continue;
-                            }
-                            else {
-                                System.out.println("\n" + spieler1 + ", wähle dein Item aus:");
-                                input1.ItemUse(false);
-                                break p1;
-                            }
-                            
-                        case 3:
-                            System.out.println("\n" + input1.getName() + " ist geflohen! \n" + spieler2 + " gewinnt!");
+                        }
+                    }
+                    else { //Wenn input2 der Spieler ist
+                        AITurn(input1, input2, input1healthpercent);
+                        if(input2.getLife()<=0) { //Wenn Spieler 2 0 HP hat
+                            System.out.println("\nDu hast verloren, " + spieler2 + "!");
                             break fight;
                         }
                     }
                 }
-                else { //Wenn input2 der Spieler ist
-                    AITurn(input1, input2, input1healthpercent);
-                    if(input2.getLife()<=0) { //Wenn Spieler 2 0 HP hat
-                        System.out.println("\nDu hast verloren, " + spieler2 + "!");
-                        break fight;
-                    }
-                }
                 input2.setIsProtected(false);
+                input2.setUsedStun(false);
                 DeveloperConsole.UpdateWindow();
                 
                 checkBurn(input1, input2);
-                if(!input2isAI || bothAreHuman) { //Wenn input2 der Spieler ist
-                    p2: while(true) { //Zweite Spieler brauchen while schleifen um auf diese zurück zu callen wenn alle Items verbraucht wurden
-                        System.out.println("\n" + spieler2 + ", wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
-                        menuinputp2 = attackinput.nextInt();
-                        switch(menuinputp2) {
-                            case 1:
-                            default:
-                                System.out.println("\n" + spieler2 + ", wähle deine Attacke:");
-                                for(int i = 0; i<input2.getAttacks().length; i++) {
-                                    System.out.println((i+1) + ") " + input2.getAttacks()[i].name);
-                                }
-                                input2.setCurrentAttack(p2attack = attackinput.nextInt());
-                                
-                                AttackShit(input2, input1, p2attack);
-                        
-                                if(input1.getLife()<=0) {
-                                    System.out.println("\nGlückwunsch, " + spieler2 + ", du hast gewonnen!");
-                                    break fight;
-                                }
-                                break p2;
+                if(!input1.getUsedStun()) {
+                    if(!input2isAI || bothAreHuman) { //Wenn input2 der Spieler ist
+                        p2: while(true) { //Zweite Spieler brauchen while schleifen um auf diese zurück zu callen wenn alle Items verbraucht wurden
+                            System.out.println("\n" + spieler2 + ", wähle aus, was du machen möchtest: \n1) Angreifen \n2) Items benutzen \n3) Fliehen");
+                            menuinputp2 = attackinput.nextInt();
+                            switch(menuinputp2) {
+                                case 1:
+                                default:
+                                    System.out.println("\n" + spieler2 + ", wähle deine Attacke:");
+                                    for(int i = 0; i<input2.getAttacks().length; i++) {
+                                        System.out.println((i+1) + ") " + input2.getAttacks()[i].name);
+                                    }
+                                    input2.setCurrentAttack(p2attack = attackinput.nextInt());
+                                    
+                                    AttackShit(input2, input1, p2attack);
                             
-                            case 2:
-                                if(input2.getItemTempUses()[0]==0 && input2.getItemTempUses()[1]==0 && input2.getItemTempUses()[2]==0 && input2.getItemTempUses()[3]==0) {
-                                    System.out.println("\nAlle Items verbraucht!");
-                                    continue p2;
-                                }
-                                else {
-                                    System.out.println("\n" + spieler2 + ", wähle dein Item aus:");
-                                    input2.ItemUse(false);
+                                    if(input1.getLife()<=0) {
+                                        System.out.println("\nGlückwunsch, " + spieler2 + ", du hast gewonnen!");
+                                        break fight;
+                                    }
                                     break p2;
-                                }
-                            
-                            case 3:
-                                System.out.println("\n" + input2.getName() + " ist geflohen! \n" + spieler1 + " gewinnt!");
-                                break fight;
+                                
+                                case 2:
+                                    if(input2.getItemTempUses()[0]==0 && input2.getItemTempUses()[1]==0 && input2.getItemTempUses()[2]==0 && input2.getItemTempUses()[3]==0) {
+                                        System.out.println("\nAlle Items verbraucht!");
+                                        continue p2;
+                                    }
+                                    else {
+                                        System.out.println("\n" + spieler2 + ", wähle dein Item aus:");
+                                        input2.ItemUse(false);
+                                        break p2;
+                                    }
+                                
+                                case 3:
+                                    System.out.println("\n" + input2.getName() + " ist geflohen! \n" + spieler1 + " gewinnt!");
+                                    break fight;
+                            }
+                        }
+                    }
+                    else { //Wenn input1 der Spieler ist
+                        AITurn(input2, input1, input2healthpercent);
+                        if(input1.getLife()<=0) { //Wenn Spieler 2 0 HP hat
+                            System.out.println("\nDu hast verloren, " + spieler1 + "!");
+                            break fight;
                         }
                     }
                 }
-                else { //Wenn input1 der Spieler ist
-                    AITurn(input2, input1, input2healthpercent);
-                    if(input1.getLife()<=0) { //Wenn Spieler 2 0 HP hat
-                        System.out.println("\nDu hast verloren, " + spieler1 + "!");
-                        break fight;
-                    }
-                }
                 input1.setIsProtected(false);
+                input1.setUsedStun(false);
                 DeveloperConsole.UpdateWindow();
         }
             
@@ -306,6 +312,9 @@ public class CharacterCreation { //Our work is never over. ~Daft Punk
                     }
                 else if (input1.getAttacks()[attack-1].type.equals("Shield")) { //Falls die Attacke blockt/abwehrt
                         System.out.println("\n" + input1.getName() + " ist für die nächste Runde geschützt.");
+                }
+                else if (input1.getAttacks()[attack-1].type.equals("Stun")) {
+                        System.out.println("\n" + input1.getName() + " hat den Gegner gestunned und ist deshalb wieder am Zug!");
                 }
                 else {
                         if(input1.getFinalAttackDamage()>input1.getDamage()) { //Falls es mehr Schaden macht, als dein Character kann (dank der Attacke)
